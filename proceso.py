@@ -22,15 +22,15 @@ class Procesos:
         
     def get_ejecuciones(self):
         return self.__ejecuciones
-    
+            
+    def mostrarProceso(self):
+        return (f"ID Proceso: {self.get_id()} \nEspacio: {self.get_espacio()} "
+                f"\nEstado: {self.get_estado()} \nEjecuciones: {self.get_ejecuciones()} "
+                f"\nRecursos: {self.get_recursos()}")
+        
     def simular_proceso (self):
         print(f"Proceso {self.get_id}")
         self.__ejecuciones -= 1
         
         if self.get_ejecuciones == 0 :
             self.__estado = "terminado"
-            
-    def mostrarProceso(self):
-        return (f"ID Proceso: {self.get_id()} \nEspacio: {self.get_espacio()} "
-                f"\nEstado: {self.get_estado()} \nEjecuciones: {self.get_ejecuciones()} "
-                f"\nRecursos: {self.get_recursos()}")
