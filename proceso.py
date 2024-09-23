@@ -21,12 +21,12 @@ class Procesos:
     def get_estado(self):
         return self.__estado
         
-    #def get_ejecuciones(self):
-    #    return self.__ejecuciones
+    def get_hilos(self):
+        return self.__hilos
             
     def mostrarProceso(self):
         return (f"ID Proceso: {self.get_id()} \nTamaño: {self.get_tamanio()} "
-                f"\nEstado: {self.get_estado()}"
+                f"\nEstado: {self.get_estado()} \nHilos: {self.get_hilos()}"
                 f"\nRecursos: {self.get_recursos()}")
         
     def simular_proceso (self):
