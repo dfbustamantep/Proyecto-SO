@@ -1,4 +1,4 @@
-import recurso
+from recurso import Recurso
 from proceso import Procesos
 
 # Metodo estatico para imprimir lineas
@@ -22,8 +22,20 @@ class BCP:
     cola_terminado =[]
 
     # Recursos
-    recursos = ()
-    recurso1 = []
+    cpu = Recurso(1, "CPU")
+    memoria = Recurso(2, "Memoria RAM")
+    disco = Recurso(3, "Disco Duro")
+    impresora = Recurso(4, "Impresora")
+    
+    # Tupla de recursos (No se puede modificiar)
+    recursos = (cpu,memoria,disco,impresora)
+    
+    # Cola que se usara para cada recurso
+    cola_cpu =[]
+    cola_memoria =[]
+    cola_disco =[]
+    cola_impresora =[]
+    
     
     def creacion_proceos(self):
         numero_procesos = int(input ("Ingrese el numero de procesos que desea crear: "))
@@ -38,17 +50,19 @@ class BCP:
             printLines()
             espacio = int(input("Ingrese el espacio requerido por el proceso: "))
             #ejecuciones = int(input("Ingrese el numero de veces a ejecutar el proceos: "))
-            numero_recursos = input("Ingrese los recursos que va a necesitar el proceso: ")
+            print("Recursos disponibles")
+            for recurso in self.recursos:
+                print(recurso.mostrar_recurso())
+            
+                            
+            recursos = input("Ingrese los recursos que va a necesitar el proceso: ")
             hilos = int(input("Ingrese el numero de hilos que va a tener el proceos: "))
             
-            # estado=input("Ingrese cual va a ser el estado inicial del proceso (nuevo,listo,bloqueado,ejecucion,terminado): ")
-            # while estado not in self.estados_procesos:
-            #    print("Ingrese un estado valido")
-            #    estado = input()
+           
             printLines()
             
             # Creamos el proeceso y lo agregamos a la lista
-            proceso = Procesos(id_proceso,espacio,hilos,numero_recursos)
+            proceso = Procesos(id_proceso,espacio,hilos,recursos)
             # Agregamos el proceso a la lista de procesos
             self.procesos.append(proceso)
             
@@ -70,10 +84,11 @@ class BCP:
         printLines()
         
         for elemento in self.procesos:
-            print(elemento.mostrarProceso())
+            print(elemento.mostrar_proceso())
             printLines()
-        
-        '''print("\t\tColas de estados")
+            
+    def mostar_colas(self):    
+        print("\t\tColas de estados")
         printLines()
         
         print("\tCola nuevos")
@@ -100,6 +115,48 @@ class BCP:
         for elemento in self.cola_terminado:
             print("ID proceso:",elemento.get_id())  
     
-        '''
         
+    def cambiar_estado(self,nuevo_estado:str,proceso:Procesos):
+        if nuevo_estado in BCP.estados_procesos:
+            estado_anterior=proceso.get_estado()
+            
+            # Al cambiar de estado tenemos que quitar el proceso de la cola de procesos del estado que tenia,primero verificamos que si 
+            # este en la cola del estado anterior y añadirla a la cola del nuevo estado
+            
+            if estado_anterior == "nuevo":
+                if proceso in self.cola_nuevo:
+                    self.cola_nuevo.remove(proceso)
+                    
+            elif estado_anterior == "listo":
+                if proceso in self.cola_listo:
+                    self.cola_listo.remove(proceso)
+                    
+            elif estado_anterior == "bloqueado":
+                if proceso in self.cola_bloqueado:
+                    self.cola_bloqueado.remove(proceso)
+                    
+            elif estado_anterior == "ejecucion":
+                if proceso in self.cola_ejecucion:
+                    self.cola_ejecucion.remove(proceso)
+                    
+            elif estado_anterior == "terminado":
+                if proceso in self.cola_terminado:
+                    self.cola_terminado.remove(proceso)
+            
+            # Cambiamos el estado del proceso
+            proceso.set_estado(nuevo_estado)
+            
+            
+            if nuevo_estado == "nuevo":
+                self.cola_nuevo.append(proceso)
+            elif nuevo_estado == "listo":
+               self.cola_listo.append(proceso)
+            elif nuevo_estado == "bloqueado":
+               self.cola_bloqueado.append(proceso)
+            elif nuevo_estado == "ejecucion":
+                self.cola_ejecucion.append(proceso)
+            else:
+                self.cola_terminado.append(proceso)
+        
+            
        
