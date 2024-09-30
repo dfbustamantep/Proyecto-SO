@@ -1,10 +1,13 @@
-import BCP
+from BCP import BCP
 
-BCP.printLines()
+def printLines():
+    print("----------------------------------------------------------------------")
+    
+printLines()
 print("\tSimulador funcionamiento de un sistema operativo")
-BCP.printLines()
+printLines()
 
-bcp = BCP.BCP()
+bcp = BCP()
 
-bcp.creacion_proceos()
+bcp.creacion_procesos()
 bcp.mostrar_procesos()

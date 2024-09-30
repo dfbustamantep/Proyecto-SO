@@ -21,3 +21,5 @@ class Recurso:
     def mostrar_recurso(self):
         return (f"ID recurso: {self.get_id_recurso()} \nNombre del recurso: {self.get_nombre()} "
                 f"\nRecurso disponible: {self.get_dipsonible()}")
+    
+       

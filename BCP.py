@@ -2,7 +2,7 @@ from recurso import Recurso
 from proceso import Procesos
 
 # Metodo estatico para imprimir lineas
-@staticmethod
+#@staticmethod
 def printLines():
     print("----------------------------------------------------------------------")
 
@@ -27,8 +27,8 @@ class BCP:
     disco = Recurso(3, "Disco Duro")
     impresora = Recurso(4, "Impresora")
     
-    # Tupla de recursos (No se puede modificiar)
-    recursos = (cpu,memoria,disco,impresora)
+    # Lista de recursos 
+    recursos = [cpu,memoria,disco,impresora]
     
     # Cola que se usara para cada recurso
     cola_cpu =[]
@@ -37,7 +37,7 @@ class BCP:
     cola_impresora =[]
     
     
-    def creacion_proceos(self):
+    def creacion_procesos(self):
         numero_procesos = int(input ("Ingrese el numero de procesos que desea crear: "))
         printLines()
         id_proceso = 00
@@ -50,22 +50,66 @@ class BCP:
             printLines()
             espacio = int(input("Ingrese el espacio requerido por el proceso: "))
             #ejecuciones = int(input("Ingrese el numero de veces a ejecutar el proceos: "))
+            hilos = int(input("Ingrese el numero de hilos que va a tener el proceos: "))
+            
             print("Recursos disponibles")
             for recurso in self.recursos:
                 print(recurso.mostrar_recurso())
             
-                            
-            recursos = input("Ingrese los recursos que va a necesitar el proceso: ")
-            hilos = int(input("Ingrese el numero de hilos que va a tener el proceos: "))
+            # proc es la variable que va a controlar el ciclo while,inicialmente es true para que pregunte por el primer recursos 
+            # que se va a necesitar
+            proc = True
+            
+            # Recuros que necesita el proceso
+            recursosP =[]
+            # Creamos el proeceso y lo agregamos a la lista
+            proceso = Procesos(id_proceso,espacio,hilos)    
+            while proc: 
+                encontrado = False                            
+                recurso = input("Ingrese el id del recurso que va a necesitar el proceso: ")
+                for rec in self.recursos:
+                    if rec.get_id_recurso() == int(recurso):
+                        recursosP.append(rec)
+                        encontrado = True
+                       
+                        if rec.get_dipsonible() == True:
+                            print("recurso pasando a usado")
+                            rec.set_dipsonible(False)  
+                        else:
+                            print("Recurso no disponible en este momento,el recurso sera asignado en orden de llegada")
+                        # Vamos a agregar el proceso a la lista del recurs el cual necesita
+                        if rec.get_nombre() == "CPU":
+                            self.cola_cpu.append(proceso)
+                        elif rec.get_nombre() == "Memoria RAM":
+                                self.cola_memoria.append(proceso)
+                        elif rec.get_nombre() == "Disco Duro":
+                            self.cola_disco.append(proceso)
+                        elif rec.get_nombre() == "Impresora":
+                            self.cola_impresora.append(proceso)
+                        else:
+                            print("No se agrego")
+               
+                if not encontrado:
+                    print("ID de recurso inexistente")
+         
+                proc=input("Desea agregar otro recurso?(s/n): ").lower()
+                if(proc!='s'):
+                    proc = False
+        
             
            
             printLines()
-            
+     
             # Creamos el proeceso y lo agregamos a la lista
-            proceso = Procesos(id_proceso,espacio,hilos,recursos)
+            #proceso = Procesos(id_proceso,espacio,hilos,recursosP)
+            proceso.set_recursos(recursosP)
+            self.cola_nuevo.append(proceso)
             # Agregamos el proceso a la lista de procesos
             self.procesos.append(proceso)
+            # printLines()
             
+        self.mostar_colas_recursos()
+        self.mostar_colas_estados()
             # Vamos a agregar el proceso a la lista del estado al cual pertenece
             #if estado == "nuevo":
             #    self.cola_nuevo.append(proceso)
@@ -80,14 +124,40 @@ class BCP:
         
     
     def mostrar_procesos(self):
+        printLines()
         print("\tProcesos")
         printLines()
         
         for elemento in self.procesos:
-            print(elemento.mostrar_proceso())
+            elemento.mostrar_proceso()
+            
             printLines()
             
-    def mostar_colas(self):    
+    def mostar_colas_recursos(self):    
+        print("\t\tColas de recursos")
+        printLines()
+        
+        print("\tCola CPU")
+        for elemento in self.cola_cpu:
+            print("ID proceso:",elemento.get_id())
+        
+        printLines()
+        print("\tCola Memoria")    
+        for elemento in self.cola_memoria:
+            print("ID proceso:",elemento.get_id())   
+
+        printLines()
+        print("\tCola Disco") 
+        for elemento in self.cola_disco:
+            print("ID proceso:",elemento.get_id())
+        
+        printLines()
+        print("\tCola Impresora") 
+        for elemento in self.cola_impresora:
+            print("ID proceso:",elemento.get_id())  
+
+    def mostar_colas_estados(self):    
+        printLines()
         print("\t\tColas de estados")
         printLines()
         
@@ -147,13 +217,13 @@ class BCP:
             proceso.set_estado(nuevo_estado)
             
             
-            if nuevo_estado == "nuevo":
-                self.cola_nuevo.append(proceso)
-            elif nuevo_estado == "listo":
+            #if nuevo_estado == "nuevo" :
+            #    self.cola_nuevo.append(proceso)
+            if nuevo_estado == "listo":
                self.cola_listo.append(proceso)
             elif nuevo_estado == "bloqueado":
                self.cola_bloqueado.append(proceso)
-            elif nuevo_estado == "ejecucion":
+            elif nuevo_estado == "ejecucion" and estado_anterior == "listo":
                 self.cola_ejecucion.append(proceso)
             else:
                 self.cola_terminado.append(proceso)
