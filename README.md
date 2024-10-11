@@ -24,3 +24,13 @@
   <li>Terminado</li>
   <li>Bloqueado</li>
 </ul>
+
+<h2>Herramientas usadas</h2>
+<ul>
+  <li>Python</li>
+ <!-- <li>Listo</li>
+  <li>Ejecucion</li>
+  <li>Terminado</li>
+  <li>Bloqueado</li>-->
+</ul>
+
