@@ -4,7 +4,7 @@ def printLines():
     print("----------------------------------------------------------------------")
     
 printLines()
-print("\tSimulador funcionamiento de un sistema operativo")
+print("\tSimulador funcionamiento de un Sistema Operativo")
 printLines()
 
 bcp = BCP()

@@ -11,7 +11,7 @@ class BCP:
     # Tupla de estados que pueden haber - La tupla es una estructura de datos inmutable
     estados_procesos = ("nuevo","listo","bloqueado","ejecucion","terminado")
 
-    # Lsita donde se almacenaran todos los proceos
+    # Lista donde se almacenaran todos los proceos
     procesos = []
 
     # Cola que se usara para cada proceso
@@ -38,14 +38,20 @@ class BCP:
     
     
     def creacion_procesos(self):
-        numero_procesos = int(input ("Ingrese el numero de procesos que desea crear: "))
-        printLines()
+        try:
+            numero_procesos = int(input("Ingrese el número de procesos que desea crear: "))
+            printLines()
+        except ValueError:
+            print("Por favor, ingrese un número válido.")
+            printLines()
+            return
+        
+        
         id_proceso = 00
 
         for i in range (0,numero_procesos):
             id_proceso += 1
             
-            #print(id_proceso)
             print(f"\tProceso {id_proceso}")
             printLines()
             espacio = int(input("Ingrese el espacio requerido por el proceso: "))
@@ -53,6 +59,7 @@ class BCP:
             hilos = int(input("Ingrese el numero de hilos que va a tener el proceos: "))
             
             print("Recursos disponibles")
+            printLines()
             for recurso in self.recursos:
                 print(recurso.mostrar_recurso())
             
@@ -64,8 +71,10 @@ class BCP:
             recursosP =[]
             # Creamos el proeceso y lo agregamos a la lista
             proceso = Procesos(id_proceso,espacio,hilos)    
+            
             while proc: 
-                encontrado = False                            
+                encontrado = False
+                printLines()                            
                 recurso = input("Ingrese el id del recurso que va a necesitar el proceso: ")
                 for rec in self.recursos:
                     if rec.get_id_recurso() == int(recurso):
@@ -75,8 +84,9 @@ class BCP:
                         if rec.get_dipsonible() == True:
                             print("recurso pasando a usado")
                             rec.set_dipsonible(False)  
-                        else:
+                        else: 
                             print("Recurso no disponible en este momento,el recurso sera asignado en orden de llegada")
+                            
                         # Vamos a agregar el proceso a la lista del recurs el cual necesita
                         if rec.get_nombre() == "CPU":
                             self.cola_cpu.append(proceso)
@@ -87,7 +97,7 @@ class BCP:
                         elif rec.get_nombre() == "Impresora":
                             self.cola_impresora.append(proceso)
                         else:
-                            print("No se agrego")
+                            print("No se agrego a la cola del recurso")
                
                 if not encontrado:
                     print("ID de recurso inexistente")
@@ -121,6 +131,7 @@ class BCP:
             #    self.cola_ejecucion.append(proceso)
             #else:
             #    self.cola_terminado.append(proceso)
+        
         
     
     def mostrar_procesos(self):
@@ -217,16 +228,17 @@ class BCP:
             proceso.set_estado(nuevo_estado)
             
             
-            #if nuevo_estado == "nuevo" :
-            #    self.cola_nuevo.append(proceso)
-            if nuevo_estado == "listo":
+            # Realizamos el cambio de estado,pero para hacer este cambio verificamos que este si se pueda hacer teniendo en cuenta la grafica que esta en el reademe
+            if nuevo_estado == "listo" and (estado_anterior=="nuevo" or estado_anterior=="ejecucion" or estado_anterior=="bloqueado"):
                self.cola_listo.append(proceso)
-            elif nuevo_estado == "bloqueado":
+            elif nuevo_estado == "bloqueado" and estado_anterior=="ejecucion":
                self.cola_bloqueado.append(proceso)
             elif nuevo_estado == "ejecucion" and estado_anterior == "listo":
                 self.cola_ejecucion.append(proceso)
-            else:
+            elif nuevo_estado == "terminado" and estado_anterior == "ejecucion":
                 self.cola_terminado.append(proceso)
+            else:
+                print("El cambio de estado no se puede realizar")
         
             
        
