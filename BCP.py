@@ -80,13 +80,13 @@ class BCP:
                     if rec.get_id_recurso() == int(recurso):
                         recursosP.append(rec)
                         encontrado = True
-                       
+                        '''
                         if rec.get_dipsonible() == True:
                             print("recurso pasando a usado")
                             rec.set_dipsonible(False)  
                         else: 
                             print("Recurso no disponible en este momento,el recurso sera asignado en orden de llegada")
-                            
+                        '''    
                         # Vamos a agregar el proceso a la lista del recurs el cual necesita
                         if rec.get_nombre() == "CPU":
                             self.cola_cpu.append(proceso)
@@ -119,6 +119,7 @@ class BCP:
             # printLines()
             
         self.mostar_colas_recursos()
+        print()
         self.mostar_colas_estados()
             # Vamos a agregar el proceso a la lista del estado al cual pertenece
             #if estado == "nuevo":
@@ -140,8 +141,8 @@ class BCP:
         printLines()
         
         for elemento in self.procesos:
+            # Recorremos la lista de procesos,tomando cada procesos y mostrando sus datos
             elemento.mostrar_proceso()
-            
             printLines()
             
     def mostar_colas_recursos(self):    
@@ -196,7 +197,23 @@ class BCP:
         for elemento in self.cola_terminado:
             print("ID proceso:",elemento.get_id())  
     
+    def ejecutar(self):
+        # Pasamos los elementos que estan en la cola de nuevo a la cola de listo
+        print("Cola nuevo")
+        for elemento in self.cola_nuevo:
+            print("ID proceso:",elemento.get_id())
         
+        while self.cola_nuevo:
+            # Guardamos el proceso que este de primeras en la cola de listo,le cambiamos el estado a listo,y lo añadimos a la cola de listo
+            proceso = self.cola_nuevo.pop(0)
+            proceso.set_estado("listo")
+            self.cola_listo.append(proceso)
+        
+        print("Cola listo")
+        for elemento in self.cola_listo:
+            print("ID proceso:",elemento.get_id())
+    
+    '''
     def cambiar_estado(self,nuevo_estado:str,proceso:Procesos):
         if nuevo_estado in BCP.estados_procesos:
             estado_anterior=proceso.get_estado()
@@ -239,6 +256,6 @@ class BCP:
                 self.cola_terminado.append(proceso)
             else:
                 print("El cambio de estado no se puede realizar")
-        
+    '''    
             
        
