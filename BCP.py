@@ -203,17 +203,20 @@ class BCP:
         for elemento in self.cola_nuevo:
             print("ID proceso:",elemento.get_id())
         
+        # Todos los procesos nuevos cambian a listos
         while self.cola_nuevo:
             # Guardamos el proceso que este de primeras en la cola de listo,le cambiamos el estado a listo,y lo añadimos a la cola de listo
             proceso = self.cola_nuevo.pop(0)
-            proceso.set_estado("listo")
-            self.cola_listo.append(proceso)
+            # La logica del cambio de estado ya esta en otro metodo
+            self.cambiar_estado("listo",proceso)
+            #proceso.set_estado("listo")
+            #self.cola_listo.append(proceso)
         
         print("Cola listo")
         for elemento in self.cola_listo:
             print("ID proceso:",elemento.get_id())
     
-    '''
+    
     def cambiar_estado(self,nuevo_estado:str,proceso:Procesos):
         if nuevo_estado in BCP.estados_procesos:
             estado_anterior=proceso.get_estado()
@@ -221,6 +224,22 @@ class BCP:
             # Al cambiar de estado tenemos que quitar el proceso de la cola de procesos del estado que tenia,primero verificamos que si 
             # este en la cola del estado anterior y añadirla a la cola del nuevo estado
             
+            # Realizamos el cambio de estado,pero para hacer este cambio verificamos que este si se pueda hacer teniendo en cuenta la grafica que esta en el reademe
+            if nuevo_estado == "listo" and (estado_anterior=="nuevo" or estado_anterior=="ejecucion" or estado_anterior=="bloqueado"):
+               self.cola_listo.append(proceso)
+            elif nuevo_estado == "bloqueado" and estado_anterior=="ejecucion":
+               self.cola_bloqueado.append(proceso)
+            elif nuevo_estado == "ejecucion" and estado_anterior == "listo":
+                self.cola_ejecucion.append(proceso)
+            elif nuevo_estado == "terminado" and estado_anterior == "ejecucion":
+                self.cola_terminado.append(proceso)
+            else:
+                print("El cambio de estado no se puede realizar")
+
+            # Cambiamos el estado del proceso
+            proceso.set_estado(nuevo_estado)
+            
+            #Eliminamos el proceso de la cola en donde estaba
             if estado_anterior == "nuevo":
                 if proceso in self.cola_nuevo:
                     self.cola_nuevo.remove(proceso)
@@ -241,21 +260,10 @@ class BCP:
                 if proceso in self.cola_terminado:
                     self.cola_terminado.remove(proceso)
             
-            # Cambiamos el estado del proceso
-            proceso.set_estado(nuevo_estado)
             
             
-            # Realizamos el cambio de estado,pero para hacer este cambio verificamos que este si se pueda hacer teniendo en cuenta la grafica que esta en el reademe
-            if nuevo_estado == "listo" and (estado_anterior=="nuevo" or estado_anterior=="ejecucion" or estado_anterior=="bloqueado"):
-               self.cola_listo.append(proceso)
-            elif nuevo_estado == "bloqueado" and estado_anterior=="ejecucion":
-               self.cola_bloqueado.append(proceso)
-            elif nuevo_estado == "ejecucion" and estado_anterior == "listo":
-                self.cola_ejecucion.append(proceso)
-            elif nuevo_estado == "terminado" and estado_anterior == "ejecucion":
-                self.cola_terminado.append(proceso)
-            else:
-                print("El cambio de estado no se puede realizar")
-    '''    
+            
+            
+        
             
        
