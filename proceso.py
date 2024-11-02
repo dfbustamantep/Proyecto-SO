@@ -57,6 +57,7 @@ class Procesos:
     def simular_proceso (self):
         print(f"Proceso {self.get_id}")
         #self.__ejecuciones -= 1
+        self.__tamanio -= 1
         
-        #if self.get_ejecuciones == 0 :
-        #    self.__estado = "terminado"
+        if self.get_tamanio() == 0 :
+            self.__estado = "terminado"
