@@ -1,8 +1,6 @@
 from recurso import Recurso
 from proceso import Procesos
 
-# Metodo estatico para imprimir lineas
-#@staticmethod
 def printLines():
     print("----------------------------------------------------------------------")
 
@@ -75,19 +73,21 @@ class BCP:
             while proc: 
                 encontrado = False
                 printLines()                            
-                recurso = input("Ingrese el id del recurso que va a necesitar el proceso: ")
+                recurso = str(input("Ingrese el id del recurso que va a necesitar el proceso: "))
                 for rec in self.recursos:
                     if rec.get_id_recurso() == int(recurso):
                         recursosP.append(rec)
                         encontrado = True
+                        
+                        # Aca se comprueba si el recurso esta disponible se cambia la disponibilidad a false y mas adelante agregamos el proceos a la cola del recurso
                         '''
                         if rec.get_dipsonible() == True:
                             print("recurso pasando a usado")
                             rec.set_dipsonible(False)  
                         else: 
                             print("Recurso no disponible en este momento,el recurso sera asignado en orden de llegada")
-                        '''    
-                        # Vamos a agregar el proceso a la lista del recurs el cual necesita
+                        '''  
+                        # Vamos a agregar el proceso a la lista del recurso el cual necesita
                         if rec.get_nombre() == "CPU":
                             self.cola_cpu.append(proceso)
                         elif rec.get_nombre() == "Memoria RAM":
@@ -198,24 +198,84 @@ class BCP:
             print("ID proceso:",elemento.get_id())  
     
     def ejecutar(self):
-        # Pasamos los elementos que estan en la cola de nuevo a la cola de listo
-        print("Cola nuevo")
-        for elemento in self.cola_nuevo:
-            print("ID proceso:",elemento.get_id())
-        
-        # Todos los procesos nuevos cambian a listos
-        while self.cola_nuevo:
-            # Guardamos el proceso que este de primeras en la cola de listo,le cambiamos el estado a listo,y lo añadimos a la cola de listo
-            proceso = self.cola_nuevo.pop(0)
-            # La logica del cambio de estado ya esta en otro metodo
+        #if(len(self.cola_ejecucion)!=0):
+        # Pasamos los elementos que estan en la cola de bloqueado a la cola de listo para mirar si ya se pueden ejecutar
+        while self.cola_bloqueado:
+            # Guardamos el proceso que este de primeras en la cola de nuevo,le cambiamos el estado a listo,y lo añadimos a la cola de listo
+            proceso = self.cola_bloqueado.pop(0)
             self.cambiar_estado("listo",proceso)
-            #proceso.set_estado("listo")
-            #self.cola_listo.append(proceso)
-        
-        print("Cola listo")
-        for elemento in self.cola_listo:
-            print("ID proceso:",elemento.get_id())
-    
+          
+        #Si la cola de ejecucion no esta vacia
+        if self.cola_ejecucion:
+            print("Cola de ejucucion no esta vacia")
+            # Codigo de mostar colas para mirar si la cola de ejecucion no esta vacia
+            print("Elementos cola de ejecucion")
+            for elemento in self.cola_ejecucion:
+                print("ID proceso:",elemento.get_id())   
+            print("Fin cola  de ejecucion")
+            
+        # Pasamos los elementos que estan en la cola de nuevo a la cola de listo        
+        while self.cola_nuevo:
+            # Guardamos el proceso que este de primeras en la cola de nuevo,le cambiamos el estado a listo,y lo añadimos a la cola de listo
+            proceso = self.cola_nuevo.pop(0)
+            self.cambiar_estado("listo",proceso)
+          
+        # Pasamos los elementos que estan en la cola de listo a ejecucion        
+        while self.cola_listo:
+            # Guardamos el proceso que este de primeras en la cola de listo,le cambiamos el estado a listo,y lo añadimos a la cola de listo
+            proceso = self.cola_listo.pop(0)
+            recursos_necesarios = proceso.get_recursos()
+            
+            recursos_disponibles = True
+            #Comprobamos si todos los recursos que necesita se pueden usar al meomento
+            for recurso in recursos_necesarios:
+                print(f"Revisando disponibilidad del recurso: {recurso.get_nombre()}")
+                #Si el nombre del recurso es alguno se verifica que este en la cola de ese recurso y este de primeras en esa cola
+                if recurso.get_nombre() == "CPU":
+                    if not (proceso in self.cola_cpu and self.cola_cpu[0] == proceso):
+                        recursos_disponibles = False
+
+                elif recurso.get_nombre() == "Memoria RAM":
+                    if not(proceso in self.cola_memoria and self.cola_memoria[0] == proceso):
+                        recursos_disponibles = False
+                        
+                elif recurso.get_nombre() == "Disco Duro":
+                    if not(proceso in self.cola_disco and self.cola_disco[0] == proceso):
+                        recursos_disponibles = False
+                        
+                elif recurso.get_nombre() == "Impresora":
+                    if not(proceso in self.cola_impresora and self.cola_impresora[0] == proceso):
+                        recursos_disponibles = False
+                        
+            # Si todos los recurso estan disponibles pasamos el proceso a ejecucion
+            if recursos_disponibles:
+                for recurso in recursos_necesarios:
+                #Si el nombre del recurso es alguno se verifica que este en la cola de ese recurso y este de primeras en esa cola
+                    if recurso.get_nombre() == "CPU":
+                        self.cola_cpu.pop(0)
+                                
+                    elif recurso.get_nombre() == "Memoria RAM":
+                        self.cola_memoria.pop(0)
+                                
+                    elif recurso.get_nombre() == "Disco Duro":
+                        self.cola_disco.pop(0)
+                                
+                    elif recurso.get_nombre() == "Impresora":
+                            self.cola_impresora.pop(0)
+            
+                self.cambiar_estado("ejecucion",proceso)
+                print(f"Ejecutando proceso {proceso.get_id()}")
+                proceso.simular_proceso()
+                #Si el proceos no termino vuelve a la cola de listo
+                if proceso.get_estado() != "terminado":
+                    self.cambiar_estado("listo",proceso)
+            
+            else:
+                # Si no están todos los recursos, el proceso regresa a 'listo'
+                print(f"Proceso {proceso.get_id()} no tiene todos los recursos disponibles. Pasa a la cola 'bloqueado'.")
+                self.cola_bloqueado.append(proceso)
+         
+        self.mostar_colas_estados()
     
     def cambiar_estado(self,nuevo_estado:str,proceso:Procesos):
         if nuevo_estado in BCP.estados_procesos:

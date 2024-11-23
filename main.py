@@ -22,7 +22,7 @@ if(ejecutar=='s' or ejecutar=='S'):
     print("Ejecucion")
     bcp.ejecutar()
     #print("Colas de estados")
-    bcp.mostar_colas_estados()
+    #bcp.mostar_colas_estados()
 
 
 

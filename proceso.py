@@ -55,7 +55,7 @@ class Procesos:
         
         
     def simular_proceso (self):
-        print(f"Proceso {self.get_id}")
+        #print(f"Proceso {self.get_id}")
         #self.__ejecuciones -= 1
         self.__tamanio -= 1
         
