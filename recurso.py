@@ -1,13 +1,13 @@
 class Recurso:
     
-    def __init__(self,id:int,nombre:str,dipsonible:bool = True):
+    def __init__(self,id:int,nombre:str,disponible:bool = True):
         # __ para hacer atributos privados
         self.__id_recurso = id
         self.__nombre=nombre
-        self.__dipsonible = dipsonible 
+        self.__disponible = disponible 
     
-    def set_dipsonible(self,dipsonible:bool):
-        self.__dipsonible = dipsonible
+    def set_disponible(self,disponible:bool):
+        self.__dipsonible = disponible
     
     def get_id_recurso(self):
         return self.__id_recurso
@@ -15,11 +15,11 @@ class Recurso:
     def get_nombre(self):
         return self.__nombre
      
-    def get_dipsonible(self):
-        return self.__dipsonible
+    def get_disponible(self):
+        return self.__disponible
     
     def mostrar_recurso(self):
         return (f"ID recurso: {self.get_id_recurso()} \nNombre del recurso: {self.get_nombre()} "
-                f"\nRecurso disponible: {self.get_dipsonible()}")
+                f"\nRecurso disponible: {self.get_disponible()}")
     
        

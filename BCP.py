@@ -44,7 +44,6 @@ class BCP:
             printLines()
             return
         
-        
         id_proceso = 00
 
         for i in range (0,numero_procesos):
@@ -77,8 +76,7 @@ class BCP:
                 for rec in self.recursos:
                     if rec.get_id_recurso() == int(recurso):
                         recursosP.append(rec)
-                        encontrado = True
-                        
+                        encontrado = True 
                         # Aca se comprueba si el recurso esta disponible se cambia la disponibilidad a false y mas adelante agregamos el proceos a la cola del recurso
                         '''
                         if rec.get_dipsonible() == True:
@@ -105,11 +103,8 @@ class BCP:
                 proc=input("Desea agregar otro recurso?(s/n): ").lower()
                 if(proc!='s'):
                     proc = False
-        
-            
-           
+
             printLines()
-     
             # Creamos el proeceso y lo agregamos a la lista
             #proceso = Procesos(id_proceso,espacio,hilos,recursosP)
             proceso.set_recursos(recursosP)
@@ -132,9 +127,7 @@ class BCP:
             #    self.cola_ejecucion.append(proceso)
             #else:
             #    self.cola_terminado.append(proceso)
-        
-        
-    
+
     def mostrar_procesos(self):
         printLines()
         print("\tProcesos")
@@ -198,21 +191,11 @@ class BCP:
             print("ID proceso:",elemento.get_id())  
     
     def ejecutar(self):
-        #if(len(self.cola_ejecucion)!=0):
         # Pasamos los elementos que estan en la cola de bloqueado a la cola de listo para mirar si ya se pueden ejecutar
         while self.cola_bloqueado:
             # Guardamos el proceso que este de primeras en la cola de nuevo,le cambiamos el estado a listo,y lo añadimos a la cola de listo
             proceso = self.cola_bloqueado.pop(0)
             self.cambiar_estado("listo",proceso)
-          
-        #Si la cola de ejecucion no esta vacia
-        if self.cola_ejecucion:
-            print("Cola de ejucucion no esta vacia")
-            # Codigo de mostar colas para mirar si la cola de ejecucion no esta vacia
-            print("Elementos cola de ejecucion")
-            for elemento in self.cola_ejecucion:
-                print("ID proceso:",elemento.get_id())   
-            print("Fin cola  de ejecucion")
             
         # Pasamos los elementos que estan en la cola de nuevo a la cola de listo        
         while self.cola_nuevo:
@@ -226,26 +209,46 @@ class BCP:
             proceso = self.cola_listo.pop(0)
             recursos_necesarios = proceso.get_recursos()
             
+            print("Recursos necesarios")
+            for r in recursos_necesarios:
+                print(r.mostrar_recurso())
+
             recursos_disponibles = True
+            # Cambiamos el proceso a estado de ejecucion,ya en estado de ejecucion revisamos si los recursos estan disponibles
+            self.cambiar_estado("ejecucion",proceso)
+            
             #Comprobamos si todos los recursos que necesita se pueden usar al meomento
             for recurso in recursos_necesarios:
                 print(f"Revisando disponibilidad del recurso: {recurso.get_nombre()}")
                 #Si el nombre del recurso es alguno se verifica que este en la cola de ese recurso y este de primeras en esa cola
                 if recurso.get_nombre() == "CPU":
+                    #self.cpu.set_dipsonible(False)
                     if not (proceso in self.cola_cpu and self.cola_cpu[0] == proceso):
                         recursos_disponibles = False
+                        print("Cola CPU")
+                        for elemento in self.cola_cpu:
+                            print("ID proceso:",elemento.get_id())  
 
                 elif recurso.get_nombre() == "Memoria RAM":
                     if not(proceso in self.cola_memoria and self.cola_memoria[0] == proceso):
                         recursos_disponibles = False
+                        print("Cola Memoria")
+                        for elemento in self.cola_memoria:
+                            print("ID proceso:",elemento.get_id())  
                         
                 elif recurso.get_nombre() == "Disco Duro":
                     if not(proceso in self.cola_disco and self.cola_disco[0] == proceso):
                         recursos_disponibles = False
+                        print("Cola DD")
+                        for elemento in self.cola_disco:
+                            print("ID proceso:",elemento.get_id())  
                         
                 elif recurso.get_nombre() == "Impresora":
                     if not(proceso in self.cola_impresora and self.cola_impresora[0] == proceso):
                         recursos_disponibles = False
+                        print("Cola Impresora")
+                        for elemento in self.cola_impresora:
+                            print("ID proceso:",elemento.get_id())  
                         
             # Si todos los recurso estan disponibles pasamos el proceso a ejecucion
             if recursos_disponibles:
@@ -261,20 +264,49 @@ class BCP:
                         self.cola_disco.pop(0)
                                 
                     elif recurso.get_nombre() == "Impresora":
-                            self.cola_impresora.pop(0)
+                        self.cola_impresora.pop(0)
             
-                self.cambiar_estado("ejecucion",proceso)
+                
                 print(f"Ejecutando proceso {proceso.get_id()}")
+                
                 proceso.simular_proceso()
+                
+                #Si el proceos tiene un tamanio de 0 quiere decir que ya finalizo
+                if proceso.get_tamanio()==0:
+                    self.cambiar_estado("terminado",proceso)
+                    
+                #print(proceso.get_estado())
+                print()
+                # Despyues de que se ejecute el proceso se deben liberar los recursos
+                
                 #Si el proceos no termino vuelve a la cola de listo
                 if proceso.get_estado() != "terminado":
                     self.cambiar_estado("listo",proceso)
-            
+
+                    #Si el proceso no ha terminado,lo volvemos a agregar a la lista de recursos
+                    for recurso in recursos_necesarios:
+                        #
+                        if recurso.get_nombre() == "CPU":
+                            self.cola_cpu.append(proceso)
+                                    
+                        elif recurso.get_nombre() == "Memoria RAM":
+                            self.cola_memoria.append(proceso)
+                                    
+                        elif recurso.get_nombre() == "Disco Duro":
+                            self.cola_disco.append(proceso)
+                                    
+                        elif recurso.get_nombre() == "Impresora":
+                            self.cola_impresora.append(proceso)
+
+                
+                        
             else:
                 # Si no están todos los recursos, el proceso regresa a 'listo'
                 print(f"Proceso {proceso.get_id()} no tiene todos los recursos disponibles. Pasa a la cola 'bloqueado'.")
                 self.cola_bloqueado.append(proceso)
-         
+                self.cambiar_estado("bloqueado",proceso)
+                
+        self.mostrar_procesos()
         self.mostar_colas_estados()
     
     def cambiar_estado(self,nuevo_estado:str,proceso:Procesos):

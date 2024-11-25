@@ -17,6 +17,7 @@ bcp.mostrar_procesos()
 #bcp.mostar_colas_estados()
 
 ejecutar = input("Desea ejecutar?(s/n): ")
+print()
 
 if(ejecutar=='s' or ejecutar=='S'):
     print("Ejecucion")
