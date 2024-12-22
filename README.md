@@ -1,6 +1,6 @@
 <h1 align="center"> Proyecto Final Sistemas Operacionales </h1>
   
-<p>Simulador del funcionamiento de un Sistema Operativo,donde se debe implementar la creacion de un proceso y sus funcionalidades,ademas de implmentar el uso de memoria y de un sistema multihilo</p>
+<p>Simulador del funcionamiento de un Sistema Operativo,donde se debe implementar la creación de un proceso y sus funcionalidades,además de implementar el uso de memoria y de un sistema multihilo</p>
 
 <p align="center">
   <img src ="https://cursos.clavijero.edu.mx/cursos/182_so/modulo2/imagenes/imagen3.jpg" width="800" height="300"></img>
@@ -26,13 +26,13 @@
   <li>Bloqueado</li>
 </ul>
 
-<h4>Memoria<h4>
+<h4>Memoria</h4>
 <ul>
   <li>Principal:RAM</li>
   <li>Virtual</li>
 </ul>
 
-<h4>Mutlihilos<h4>
+<h4>Mutlihilos</h4>
   
 <h2>Herramientas usadas</h2>
 <ul>

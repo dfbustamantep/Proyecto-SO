@@ -2,7 +2,11 @@ from BCP import BCP
 
 def printLines():
     print("----------------------------------------------------------------------")
-    
+
+# tamaño del marco 5 unidades
+tamanio_marco = 5 
+
+
 printLines()
 print("\tSimulador funcionamiento de un Sistema Operativo")
 printLines()
