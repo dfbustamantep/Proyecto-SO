@@ -7,13 +7,14 @@ def printLines():
     
 class Procesos:
     # En caso de no especificar recursos se inicialza con None
-    def __init__(self,id:int,tamanio:float,hilos:int,recursos:list[Recurso] = None):
+    def __init__(self,id:int,tamanio:int,hilos:int,recursos:list[Recurso] = None):
         # __ para hacer atributos privados
         self.__id_Proceso = id
         self.__tamanio=tamanio
         self.__recursos_necesarios = recursos # va a ser una lista de recursos
         self.__estado = "nuevo"
         self.__hilos = hilos
+        self._tamanio_inicial = tamanio
         # self.__ejecuciones = ejecuciones
         
     def get_id(self):
