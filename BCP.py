@@ -1,5 +1,6 @@
 from recurso import Recurso
 from proceso import Procesos
+from memoria import Memoria
 
 def printLines():
     print("----------------------------------------------------------------------")
@@ -34,7 +35,44 @@ class BCP:
     cola_disco =[]
     cola_impresora =[]
     
-    
+    # El tamanio de las memorias siempore deberia ser una potencia de 2
+    '''
+    2**0=1      2**1=2      
+    2**2=4      2**3=8      
+    2**4=16     2**5=32     
+    2**6=64     2**7=128    
+    2**8=256    2**9=512    
+    2**10=1024
+    '''
+    # tamaño memoria RAM(Principal)
+    tamanio_MP = 2**6
+
+    # tamaño memoria virtual (2 veces el tamaño de la memoria principal)
+    tamanio_MV = tamanio_MP*2
+
+    # tamaño del marco de pagina 4 unidades 
+    tamanio_marco = 4
+    '''
+    El tamaño del marco de pagina coge el tamanio del proceso y lo divide entre el quiere decir que si tenemos
+    un proceos de tamanio 100,a la memoria principal van 30 y a la virtual 70,de esos 30 se divide entre 5 y 
+    nos da 6,que serian el numero de paginas
+    '''
+    #intercambio de pagians se da despues de ejecucion
+    # cuando esta bloqueado las paginas no se cambian
+    # cuando el proceso termina libera la memoria
+
+    # la primera fila de la memoria ram siempre va a tener el SO
+    # Procentaje del proceso que se va a subir a la memoria ram y memoria secundaria
+    porcentaje_MP = 0.3
+    porcentaje_MV = 0.7
+
+
+    memoria_principal = Memoria("Memoria principal",tamanio_MP,tamanio_marco)
+    memoria_virtual = Memoria("Memoria virtual",tamanio_MV,tamanio_marco)
+
+    print(f"# de paginas memoria principal: {memoria_principal.get_paginas()}")
+    print(f"# de paginas memoria virtual: {memoria_virtual.get_paginas()}")
+
     def creacion_procesos(self):
         try:
             numero_procesos = int(input("Ingrese el número de procesos que desea crear: "))

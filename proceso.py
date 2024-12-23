@@ -14,7 +14,7 @@ class Procesos:
         self.__recursos_necesarios = recursos # va a ser una lista de recursos
         self.__estado = "nuevo"
         self.__hilos = hilos
-        self._tamanio_inicial = tamanio
+        self.__tamanio_inicial = tamanio
         # self.__ejecuciones = ejecuciones
         
     def get_id(self):
