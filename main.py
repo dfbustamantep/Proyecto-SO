@@ -20,7 +20,3 @@ print()
 if(ejecutar=='s' or ejecutar=='S'):
     print("Ejecucion")
     bcp.ejecutar()
-
-
-
-

@@ -42,7 +42,7 @@ class Memoria:
     def get_paginas_dipsonibles(self):
         return self.__paginas - sum(1 for marco in self.__matriz_memoria if marco != 'O')
     
-    def set_paginas_ocuapadas(self,numero_paginas:int,proceso:str):
+    def set_paginas_ocuapadas(self,numero_paginas:int,proceso:str,tamanio_pagina:int):
         # Mientras el numero de paginas que ocupa el proceso es diferente de 0
         while numero_paginas>0:
             # Generamos un indice aleatorio al cual vamos a ocupar con el proceso
@@ -51,9 +51,5 @@ class Memoria:
 
             if self.__matriz_memoria[indice_aleatorio] == 'O':
                 self.__matriz_memoria[indice_aleatorio] = proceso
+                self.__tamanio -= tamanio_pagina
                 numero_paginas -= 1
-
-                
-
-
-    
