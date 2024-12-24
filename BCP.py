@@ -101,12 +101,19 @@ class BCP:
             
             if self.memoria_principal.get_paginas_dipsonibles()>= paginas_memoria_principal:
                 print("El proceso tiene espacio suficiente en memoria RAM y virtual para ser creado")
+                self.memoria_principal.set_paginas_ocuapadas(paginas_memoria_principal,"p"+str(id_proceso))
+                self.memoria_virtual.set_paginas_ocuapadas(paginas_memoria_virtual,"p"+str(id_proceso))
+                
             elif self.memoria_virtual.get_paginas_dipsonibles()>= paginas_proceso:
                 print("El proceso no tiene espacio suficiente en memoria RAM,si embargo se puede crear en la memoria virtual")
+                self.memoria_virtual.set_paginas_ocuapadas(paginas_memoria_virtual,"p"+id_proceso)
             else:
                 print("El proceso no tiene espacio suficiente en memoria RAM ni en memoria virtual para ser creado")
             
+            print("Memoria principal")
             print(self.memoria_principal.get_matriz_memoria())
+            print("Memoria virtual")
+            print(self.memoria_virtual.get_matriz_memoria())
             #print(f"Paginas proceso {paginas_proceso},paginas memoria ram {paginas_memoria_ram},paginas memoria virtual {paginas_memoria_virtual}")
             hilos = int(input("Ingrese el numero de hilos que va a tener el proceso: "))
             
