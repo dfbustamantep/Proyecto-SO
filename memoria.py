@@ -7,6 +7,11 @@ class Memoria:
         self.__tamanio_marco = tamanio_marco
         self.__paginas = self.calcular_numero_paginas()
         self.__matriz_memoria = ['O'] * self.__paginas
+        
+        if self.__tipo.lower() == "memoria principal":
+            self.__matriz_memoria = ['SO'] + ['O'] * (self.__paginas-1)
+        else:
+            self.__matriz_memoria = ['O'] * self.__paginas
     #Getters
     def get_tipo(self):
         return self.__tipo
@@ -32,5 +37,8 @@ class Memoria:
     def calcular_numero_paginas(self):
         # // divison entera/quiere decir que solo nos da el numero entero
         return self.__tamanio//self.__tamanio_marco
+    
+    def get_paginas_dipsonibles(self):
+        return self.__paginas - sum(1 for marco in self.__matriz_memoria if marco != 'O')
     
     

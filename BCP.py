@@ -1,6 +1,7 @@
 from recurso import Recurso
 from proceso import Procesos
 from memoria import Memoria
+import math
 
 def printLines():
     print("----------------------------------------------------------------------")
@@ -70,8 +71,8 @@ class BCP:
     memoria_principal = Memoria("Memoria principal",tamanio_MP,tamanio_marco)
     memoria_virtual = Memoria("Memoria virtual",tamanio_MV,tamanio_marco)
 
-    print(f"# de paginas memoria principal: {memoria_principal.get_paginas()}")
-    print(f"# de paginas memoria virtual: {memoria_virtual.get_paginas()}")
+    #print(f"# de paginas memoria principal: {memoria_principal.get_paginas()}")
+    #print(f"# de paginas memoria virtual: {memoria_virtual.get_paginas()}")
 
     def creacion_procesos(self):
         try:
@@ -90,8 +91,25 @@ class BCP:
             print(f"\tProceso {id_proceso}")
             printLines()
             espacio = int(input("Ingrese el espacio requerido por el proceso: "))
-            #ejecuciones = int(input("Ingrese el numero de veces a ejecutar el proceos: "))
-            hilos = int(input("Ingrese el numero de hilos que va a tener el proceos: "))
+            # Math.ceil se usa para aproximar al siguiente entero en caso de que la division no se exacta
+            paginas_proceso = math.ceil(espacio/self.tamanio_marco)
+            paginas_memoria_principal=math.ceil(paginas_proceso*self.porcentaje_MP)
+            paginas_memoria_virtual=paginas_proceso-paginas_memoria_principal
+            
+            print(f"paginas disponibles memoria ram {self.memoria_principal.get_paginas_dipsonibles()}")
+            print(f"paginas disponibles memoria virtual {self.memoria_virtual.get_paginas_dipsonibles()}")
+            
+            if self.memoria_principal.get_paginas_dipsonibles()>= paginas_memoria_principal:
+                print("El proceso tiene espacio suficiente en memoria RAM y virtual para ser creado")
+            elif self.memoria_virtual.get_paginas_dipsonibles()>= paginas_proceso:
+                print("El proceso no tiene espacio suficiente en memoria RAM,si embargo se puede crear en la memoria virtual")
+            else:
+                print("El proceso no tiene espacio suficiente en memoria RAM ni en memoria virtual para ser creado")
+            
+            print(self.memoria_principal.get_matriz_memoria())
+            #print(f"Paginas proceso {paginas_proceso},paginas memoria ram {paginas_memoria_ram},paginas memoria virtual {paginas_memoria_virtual}")
+            hilos = int(input("Ingrese el numero de hilos que va a tener el proceso: "))
+            
             
             print("Recursos disponibles")
             printLines()
