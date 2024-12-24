@@ -43,3 +43,12 @@
   <li>Bloqueado</li>-->
 </ul>
 
+<h2>Modulos Usados</h2>
+<ul>
+  <li>Math</li>
+ <!-- <li>Listo</li>
+  <li>Ejecucion</li>
+  <li>Terminado</li>
+  <li>Bloqueado</li>-->
+</ul>
+
