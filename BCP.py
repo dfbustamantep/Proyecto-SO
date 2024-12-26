@@ -180,17 +180,6 @@ class BCP:
         self.mostar_colas_recursos()
         print()
         self.mostar_colas_estados()
-            # Vamos a agregar el proceso a la lista del estado al cual pertenece
-            #if estado == "nuevo":
-            #    self.cola_nuevo.append(proceso)
-            #elif estado == "listo":
-            #    self.cola_listo.append(proceso)
-            #elif estado == "bloqueado":
-            #    self.cola_bloqueado.append(proceso)
-            #elif estado == "ejecucion":
-            #    self.cola_ejecucion.append(proceso)
-            #else:
-            #    self.cola_terminado.append(proceso)
 
     def mostrar_procesos(self):
         printLines()
@@ -334,6 +323,8 @@ class BCP:
                 print(f"Ejecutando proceso {proceso.get_id()}")
                 
                 proceso.simular_proceso()
+                self.intercambiar_memorias()
+                
                 
                 #Si el proceos tiene un tamanio de 0 quiere decir que ya finalizo
                 if proceso.get_tamanio()==0:
@@ -415,3 +406,40 @@ class BCP:
             elif estado_anterior == "terminado":
                 if proceso in self.cola_terminado:
                     self.cola_terminado.remove(proceso)
+                    
+    def intercambiar_memorias(self):
+        # Obtenemos las matrices de memoria
+        memoria_principal = self.memoria_principal.get_matriz_memoria()
+        memoria_virtual = self.memoria_virtual.get_matriz_memoria()
+        
+        # Debemos encontrar el primer elemento en las matrices que sea difernte a O y en la matriz de memoria principal
+        # tambien debemos descartar al indice cuyo elemento sea SO
+        indice_principal = None
+        indice_virtual = None
+
+        for i in range (len(memoria_principal)):
+            if memoria_principal[i] != 'O' and memoria_principal[i] != 'SO':
+                indice_principal = i
+                break
+            
+        for i in range (len(memoria_virtual)):
+            if memoria_virtual[i] != 'O':
+                indice_virtual = i
+                break
+                
+        if indice_principal is not None and indice_virtual is not None:
+            # Accedemos a los valores que vamos a intercambiar (a,b =b,a)
+            # Desempaquetado multiple
+            memoria_principal[indice_principal], memoria_virtual[indice_virtual] = (
+            memoria_virtual[indice_virtual],
+            memoria_principal[indice_principal],
+        )
+            
+         # Guardar las matrices actualizadas en las clases de memoria
+        self.memoria_principal.set_matriz(memoria_principal)
+        self.memoria_virtual.set_matriz(memoria_virtual)
+        
+        print("Memoria principal")
+        print(self.memoria_principal.get_matriz_memoria())
+        print("Memoria virtual")
+        print(self.memoria_virtual.get_matriz_memoria())

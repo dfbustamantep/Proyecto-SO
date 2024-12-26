@@ -34,6 +34,9 @@ class Memoria:
     #setters
     def set_tamanio(self,tamanio_nuevo:int):
         self.__tamanio = tamanio_nuevo
+        
+    def set_matriz(self,matriz):
+        self.__matriz_memoria = matriz
     
     def calcular_numero_paginas(self):
         # // divison entera/quiere decir que solo nos da el numero entero
