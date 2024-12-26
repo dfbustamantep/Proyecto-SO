@@ -46,7 +46,7 @@ class BCP:
     2**10=1024
     '''
     # tamaño memoria RAM(Principal)
-    tamanio_MP = 2**6
+    tamanio_MP = 2**7
 
     # tamaño memoria virtual (2 veces el tamaño de la memoria principal)
     tamanio_MV = tamanio_MP*2
@@ -101,8 +101,9 @@ class BCP:
             
             if self.memoria_principal.get_paginas_dipsonibles()>= paginas_memoria_principal:
                 print("El proceso tiene espacio suficiente en memoria RAM y virtual para ser creado")
-                self.memoria_principal.set_paginas_ocuapadas(paginas_memoria_principal,"p"+str(id_proceso),self.tamanio_marco)
-                self.memoria_virtual.set_paginas_ocuapadas(paginas_memoria_virtual,"p"+str(id_proceso),self.tamanio_marco)
+                
+                ultimo_id = self.memoria_principal.set_paginas_ocuapadas(paginas_memoria_principal,"p"+str(id_proceso),self.tamanio_marco)
+                self.memoria_virtual.set_paginas_ocuapadas(paginas_memoria_virtual,"p"+str(id_proceso),self.tamanio_marco,ultimo_id)
                 
             elif self.memoria_virtual.get_paginas_dipsonibles()>= paginas_proceso:
                 print("El proceso no tiene espacio suficiente en memoria RAM,si embargo se puede crear en la memoria virtual")
