@@ -111,13 +111,9 @@ class BCP:
             else:
                 print("El proceso no tiene espacio suficiente en memoria RAM ni en memoria virtual para ser creado")
             
-            print("Memoria principal")
-            print(self.memoria_principal.get_matriz_memoria())
-            print("Memoria virtual")
-            print(self.memoria_virtual.get_matriz_memoria())
+            self.print_memorias()
             #print(f"Paginas proceso {paginas_proceso},paginas memoria ram {paginas_memoria_ram},paginas memoria virtual {paginas_memoria_virtual}")
             hilos = int(input("Ingrese el numero de hilos que va a tener el proceso: "))
-            
             
             print("Recursos disponibles")
             printLines()
@@ -329,6 +325,9 @@ class BCP:
                 #Si el proceos tiene un tamanio de 0 quiere decir que ya finalizo
                 if proceso.get_tamanio()==0:
                     self.cambiar_estado("terminado",proceso)
+                    #self.memoria_principal.set_liberar_paginas(str(proceso))
+                    #self.memoria_virtual.set_liberar_paginas(str(proceso))
+                    self.print_memorias()
                     
                 #print(proceso.get_estado())
                 print()
@@ -439,7 +438,10 @@ class BCP:
         self.memoria_principal.set_matriz(memoria_principal)
         self.memoria_virtual.set_matriz(memoria_virtual)
         
-        print("Memoria principal")
-        print(self.memoria_principal.get_matriz_memoria())
-        print("Memoria virtual")
-        print(self.memoria_virtual.get_matriz_memoria())
+        self.print_memorias()
+    
+    def print_memorias(self):
+            print("Memoria principal")
+            print(self.memoria_principal.get_matriz_memoria())
+            print("Memoria virtual")
+            print(self.memoria_virtual.get_matriz_memoria())
