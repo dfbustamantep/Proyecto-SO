@@ -60,10 +60,14 @@ class Memoria:
         
         return id_pagina_proceso
     
-    '''def set_liberar_paginas(self,proceso:str):
+    def set_liberar_paginas(self,proceso:str):
+        print("Liberar paginas")
+        print(proceso)
         for i in range(len(self.__matriz_memoria)):
+            
             if self.__matriz_memoria[i].startswith(proceso):
+                print(self.__matriz_memoria[i])
                 self.__matriz_memoria[i]='O'
-                
-    ''' 
-        
+                print(f"Página liberada: {i} del proceso {proceso}")
+            #else:
+                #print(f"posicion {i} {self.__matriz_memoria[i]}")

@@ -96,9 +96,9 @@ class BCP:
             paginas_memoria_principal=math.ceil(paginas_proceso*self.porcentaje_MP)
             paginas_memoria_virtual=paginas_proceso-paginas_memoria_principal
             
-            print(f"paginas disponibles memoria ram {self.memoria_principal.get_paginas_dipsonibles()}")
-            print(f"paginas disponibles memoria virtual {self.memoria_virtual.get_paginas_dipsonibles()}")
-            
+            #print(f"paginas disponibles memoria ram {self.memoria_principal.get_paginas_dipsonibles()}")
+            #print(f"paginas disponibles memoria virtual {self.memoria_virtual.get_paginas_dipsonibles()}")
+            print(f"El proceso requiere el uso de {paginas_proceso} paginas,de las cuales {self.porcentaje_MP*100}% van a la memoria principal y el resto a memoria virtual")
             if self.memoria_principal.get_paginas_dipsonibles()>= paginas_memoria_principal:
                 print("El proceso tiene espacio suficiente en memoria RAM y virtual para ser creado")
                 
@@ -110,6 +110,7 @@ class BCP:
                 self.memoria_virtual.set_paginas_ocuapadas(paginas_memoria_virtual,"p"+id_proceso)
             else:
                 print("El proceso no tiene espacio suficiente en memoria RAM ni en memoria virtual para ser creado")
+                return 
             
             self.print_memorias()
             #print(f"Paginas proceso {paginas_proceso},paginas memoria ram {paginas_memoria_ram},paginas memoria virtual {paginas_memoria_virtual}")
@@ -316,7 +317,7 @@ class BCP:
                         self.cola_impresora.pop(0)
             
                 
-                print(f"Ejecutando proceso {proceso.get_id()}")
+                print(f"Ejecutando proceso {proceso.get_id()} {proceso.get_tamanio()}")
                 
                 proceso.simular_proceso()
                 self.intercambiar_memorias()
@@ -324,9 +325,11 @@ class BCP:
                 
                 #Si el proceos tiene un tamanio de 0 quiere decir que ya finalizo
                 if proceso.get_tamanio()==0:
+                    print(f"Proceso {proceso.get_id()} terminado")
                     self.cambiar_estado("terminado",proceso)
-                    #self.memoria_principal.set_liberar_paginas(str(proceso))
-                    #self.memoria_virtual.set_liberar_paginas(str(proceso))
+                    
+                    self.memoria_principal.set_liberar_paginas(f"p{proceso.get_id()}")
+                    self.memoria_virtual.set_liberar_paginas(f"p{proceso.get_id()}")
                     self.print_memorias()
                     
                 #print(proceso.get_estado())
@@ -361,7 +364,10 @@ class BCP:
                 self.cambiar_estado("bloqueado",proceso)
                 
         self.mostrar_procesos()
+        print()
         self.mostar_colas_estados()
+        print()
+        self.print_memorias()
     
     def cambiar_estado(self,nuevo_estado:str,proceso:Procesos):
         if nuevo_estado in BCP.estados_procesos:
