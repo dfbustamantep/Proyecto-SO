@@ -42,6 +42,9 @@ class Procesos:
     
     def get_preminencia(self):
         return self.__preminencia
+
+    def set_preminencia(self,preminencia:bool):
+        self.__preminencia = preminencia
     
     def mostrar_proceso(self):
         print(f"ID Proceso: {self.get_id()}")

@@ -116,6 +116,8 @@ class BCP:
             #print(f"Paginas proceso {paginas_proceso},paginas memoria ram {paginas_memoria_ram},paginas memoria virtual {paginas_memoria_virtual}")
             hilos = int(input("Ingrese el numero de hilos que va a tener el proceso: "))
             
+            preminencia = input("El proceso tiene o no preminencia (si/no):").lower() in ['sí','si','s']
+            
             print("Recursos disponibles")
             printLines()
             for recurso in self.recursos:
@@ -128,7 +130,7 @@ class BCP:
             # Recuros que necesita el proceso
             recursosP =[]
             # Creamos el proeceso y lo agregamos a la lista
-            proceso = Procesos(id_proceso,espacio,hilos)    
+            proceso = Procesos(id_proceso,espacio,hilos,None,preminencia)    
             
             while proc: 
                 encontrado = False
@@ -169,6 +171,7 @@ class BCP:
             # Creamos el proeceso y lo agregamos a la lista
             #proceso = Procesos(id_proceso,espacio,hilos,recursosP)
             proceso.set_recursos(recursosP)
+            #proceso.set_preminencia(preminencia)
             self.cola_nuevo.append(proceso)
             # Agregamos el proceso a la lista de procesos
             self.procesos.append(proceso)
