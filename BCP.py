@@ -102,12 +102,12 @@ class BCP:
             if self.memoria_principal.get_paginas_dipsonibles()>= paginas_memoria_principal:
                 print("El proceso tiene espacio suficiente en memoria RAM y virtual para ser creado")
                 
-                ultimo_id = self.memoria_principal.set_paginas_ocuapadas(paginas_memoria_principal,"p"+str(id_proceso),self.tamanio_marco)
+                ultimo_id = self.memoria_principal.set_paginas_ocuapadas(paginas_memoria_principal,"p"+str(id_proceso),self.tamanio_marco,00)
                 self.memoria_virtual.set_paginas_ocuapadas(paginas_memoria_virtual,"p"+str(id_proceso),self.tamanio_marco,ultimo_id)
                 
             elif self.memoria_virtual.get_paginas_dipsonibles()>= paginas_proceso:
                 print("El proceso no tiene espacio suficiente en memoria RAM,si embargo se puede crear en la memoria virtual")
-                self.memoria_virtual.set_paginas_ocuapadas(paginas_memoria_virtual,"p"+id_proceso)
+                self.memoria_virtual.set_paginas_ocuapadas(paginas_memoria_virtual,"p"+str(id_proceso),self.tamanio_marco)
             else:
                 print("El proceso no tiene espacio suficiente en memoria RAM ni en memoria virtual para ser creado")
                 return 
@@ -317,10 +317,10 @@ class BCP:
                         self.cola_impresora.pop(0)
             
                 
-                print(f"Ejecutando proceso {proceso.get_id()} {proceso.get_tamanio()}")
+                print(f"Ejecutando proceso {proceso.get_id()} tamanio {proceso.get_tamanio()}")
                 
                 proceso.simular_proceso()
-                self.intercambiar_memorias()
+                self.intercambiar_memorias(f"p{proceso.get_id()}")
                 
                 
                 #Si el proceos tiene un tamanio de 0 quiere decir que ya finalizo
@@ -412,7 +412,7 @@ class BCP:
                 if proceso in self.cola_terminado:
                     self.cola_terminado.remove(proceso)
                     
-    def intercambiar_memorias(self):
+    def intercambiar_memorias(self,proceso:str):
         # Obtenemos las matrices de memoria
         memoria_principal = self.memoria_principal.get_matriz_memoria()
         memoria_virtual = self.memoria_virtual.get_matriz_memoria()
@@ -423,12 +423,12 @@ class BCP:
         indice_virtual = None
 
         for i in range (len(memoria_principal)):
-            if memoria_principal[i] != 'O' and memoria_principal[i] != 'SO':
+            if memoria_principal[i] != 'O' and memoria_principal[i] != 'SO' and memoria_principal[i].startswith(proceso):
                 indice_principal = i
                 break
             
         for i in range (len(memoria_virtual)):
-            if memoria_virtual[i] != 'O':
+            if memoria_virtual[i] != 'O' and memoria_virtual[i].startswith(proceso):
                 indice_virtual = i
                 break
                 
