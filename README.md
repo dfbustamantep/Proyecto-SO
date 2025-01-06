@@ -63,4 +63,16 @@
   <li>Bloqueado</li>-->
 </ul>
 
-<!--<h2>Como ejecutar el proyecto</h2>-->
+<h2>Como ejecutar el proyecto</h2>
+
+- Instalar dependencias necesarias para usar Flask en este proyecto
+  
+  ```
+    pip install flask
+  ```
+  ```
+    pip install flask-bootstrap 
+  ```
+  ```
+    pip install flask-wtf
+  ```
