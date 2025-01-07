@@ -10,6 +10,17 @@ app = create_app()
 def index():
     return render_template('index.html')
 
+@app.route('/crear_proceso')
+def crear_proceso():
+    return render_template('crear_proceso.html')
+
+@app.route('/visualizar_procesos')
+def visualizar_procesos():
+    return render_template('visualizar_procesos.html')
+
+@app.route('/visualizar_memoria')
+def visualizar_memoria():
+    return render_template('visualizar_memoria.html')
 if __name__ == "__main__":
     #desde cualquier direccion
     app.run(host='0.0.0.0',port=81,debug=True)
