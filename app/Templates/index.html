@@ -1,0 +1,13 @@
+
+{% extends 'base.html'%}
+{% import 'bootstrap/wtf.html' as wtf%}
+<!--Heredamos de nuestro archivo base-->
+{%block title %}
+    {{super()}}
+    Proyecto SO
+{% endblock %}
+
+{% block content %}
+    <h1>Simulador Funcionamiento Sistema Operativo</h1>
+    <p>En esta aplicacion entcontrara funcionalidades de procesos,gestion de memoria y uso de un sistema multihilo</p>
+{% endblock %}
