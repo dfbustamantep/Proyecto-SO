@@ -1,7 +1,8 @@
 from BCP import BCP
+from app.forms import CreateProcesForm
 from memoria import Memoria
-
 from flask import request,make_response,redirect,render_template,session,url_for,flash
+
 from app import create_app
 
 app = create_app()
@@ -12,7 +13,8 @@ def index():
 
 @app.route('/crear_proceso')
 def crear_proceso():
-    return render_template('crear_proceso.html')
+    form = CreateProcesForm()
+    return render_template('crear_proceso.html',form=form)
 
 @app.route('/visualizar_procesos')
 def visualizar_procesos():
@@ -24,8 +26,6 @@ def visualizar_memoria():
 if __name__ == "__main__":
     #desde cualquier direccion
     app.run(host='0.0.0.0',port=81,debug=True)
-
-
 '''
 
 def printLines():

@@ -9,5 +9,8 @@
 {% block content %}
     <h1>Crear procesos</h1>
     <p>Ingrese los datos necesarios para crear el proceso</p>
-    
+    <!--Ocualtar la etiqueta-->
+    {{ form.hidden_tag()}}
+    <!--Quickform recibe un formulario el; cual va a renderizar-->
+    {{wtf.quick_form(form)}}
 {% endblock %}
