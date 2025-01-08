@@ -57,10 +57,10 @@
 <ul>
   <li>Math</li>
   <li>Random</li>
- <!-- <li>Listo</li>
-  <li>Ejecucion</li>
-  <li>Terminado</li>
-  <li>Bloqueado</li>-->
+  <li>Flask</li>
+  <li>Flask-Bootstrap</li>
+  <li>Flask-WTF</li>
+
 </ul>
 
 <h2>Como ejecutar el proyecto</h2>
