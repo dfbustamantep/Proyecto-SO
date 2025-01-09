@@ -1,0 +1,12 @@
+{% extends 'base.html'%}
+{% import 'bootstrap/wtf.html' as wtf%}
+<!--Heredamos de nuestro archivo base-->
+{%block title %}
+    {{super()}}
+    404
+{% endblock %}
+
+{% block content %}
+    <h2>Lo sentimos este URL no existe en la aplicacion</h2>
+    <p>{{error}}</p>
+{% endblock %}

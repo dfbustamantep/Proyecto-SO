@@ -7,11 +7,15 @@ from app import create_app
 
 app = create_app()
 
+@app.errorhandler(404)
+def not_found_endpoint(error):
+    return render_template('404.html',error=error)
+
 @app.route('/')
 def index():
     return render_template('index.html')
 
-@app.route('/crear_proceso')
+@app.route('/crear_proceso',methods=["GET","POST"])
 def crear_proceso():
     form = CreateProcesForm()
     return render_template('crear_proceso.html',form=form)
