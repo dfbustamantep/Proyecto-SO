@@ -1,0 +1,14 @@
+h1{
+    font-weight: bold;
+    color:black;
+    font-family:'Poppins', sans-serif;
+}
+
+.hero {
+    /*background: url('https://hipatiamairena.org/wp-content/uploads/2018/11/Fondos-para-paginas-web-grandes.jpg') no-repeat center center;*/
+    background-size: cover;
+    color: rgba(0, 0, 0, 0.507);
+    text-align: center;
+    padding: 100px 20px;
+}
+

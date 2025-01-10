@@ -7,10 +7,75 @@
 {% endblock %}
 
 {% block content %}
-    <h1>Crear procesos</h1>
-    <p>Ingrese los datos necesarios para crear el proceso</p>
-    <!--Ocualtar la etiqueta-->
-    {{ form.hidden_tag()}}
-    <!--Quickform recibe un formulario el; cual va a renderizar-->
-    {{wtf.quick_form(form)}}
+    {%if recursos%}
+    <div class="container mt-5" style="max-width: 900px;">
+        <form method="POST">
+            {{ create_proces_form.hidden_tag() }}
+
+            
+            <h1 class="text-center mb-4">Proceso {{ id_proceso }}</h1>
+
+            <div class="mb-4">
+                {{ create_proces_form.tamanio.label(class="form-label") }}
+                {{ create_proces_form.tamanio(class="form-control") }}
+                {% for error in create_proces_form.tamanio.errors %}
+                    <div class="text-danger">{{ error }}</div>
+                {% endfor %}
+            </div>
+
+            <!-- Lista de recursos disponibles -->
+
+            <div class="mb-4 p-3 border rounded">
+                <label class="form-label">{{ create_proces_form.recursos.label }}</label>
+                <div>
+                    {% for recurso in recursos %}
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="recursos" value="{{ recurso.get_id_recurso() }}" id="recurso_{{ recurso.get_id_recurso() }}">
+                            <label class="form-check-label" for="recurso_{{ recurso.get_id_recurso() }}">
+                                {{ recurso.get_nombre() }}
+                            </label>
+                        </div>
+                    {% endfor %}
+                </div>
+                {% for error in create_proces_form.recursos.errors %}
+                    <div class="text-danger">{{ error }}</div>
+                {% endfor %}
+            </div>
+
+            <div class="mb-4">
+                {{ create_proces_form.hilos.label(class="form-label") }}
+                {{ create_proces_form.hilos(class="form-control") }}
+                {% for error in create_proces_form.hilos.errors %}
+                    <div class="text-danger">{{ error }}</div>
+                {% endfor %}
+            </div>
+            <br>
+            <div class="mb-4">
+                {{ create_proces_form.preminencia.label(class="form-label") }}
+                {{ create_proces_form.preminencia(class="form-select") }}
+                {% for error in create_proces_form.preminencia.errors %}
+                    <div class="text-danger">{{ error }}</div>
+                {% endfor %}
+            </div>
+            <br>
+            <div style="justify-content:center;display:flex;gap: 10px;">
+                {{ create_proces_form.submit(class="btn btn-primary") }}
+                <button type="reset" class="btn btn-warning">Restablecer</button>
+            </div>
+        </form>
+    </div>    
+    {%else%}
+        <h2>No hay recursos para crear procesos</h2>
+    {%endif%}
 {% endblock %}
+    <!--
+    <div class="container">
+            <--Agregar el id del proceso que se esta creando--
+            <h1>Proceso </h1>
+            !--Ocualtar la etiqueta--
+            {{ form.hidden_tag()}}
+            !--Quickform recibe un formulario el; cual va a renderizar--
+            {{wtf.quick_form(form)}}
+        </div>
+    -->
+        

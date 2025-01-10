@@ -3,8 +3,9 @@ from wtforms.fields import StringField,PasswordField,SubmitField,IntegerField,Se
 from wtforms.validators import DataRequired
 
 class CreateProcesForm(FlaskForm):
-    username = IntegerField("Tamaño del proceso",validators=[DataRequired()])
-    recursos = SelectMultipleField("Recursos",validators=[DataRequired()])
+    tamanio = IntegerField("Tamaño del proceso",validators=[DataRequired()])
+    # coerce Convertir valores seleccionados a enteros
+    recursos = SelectMultipleField("Recursos",validators=[DataRequired()],coerce=int)
     hilos = IntegerField("Hilos",validators=[DataRequired()])
     preminencia = SelectField("Preminencia",validators=[DataRequired()],choices=[('Si'), ('No')])
     submit = SubmitField("Crear proceso")

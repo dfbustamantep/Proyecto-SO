@@ -7,6 +7,18 @@
 {% endblock %}
 
 {% block content %}
-    <h1>Procesos creados</h1>
     
+    {%if procesos%}
+        <div class="container">
+            <h1>Procesos creados</h1>
+            <ul>
+                {% for proceso in procesos %}
+                    {{macros.render_items(proceso)}}
+                {% endfor %}
+            </ul>
+        </div>
+    {%else%}
+        <h2>No hay procesos creados</h2>
+        <a href="{{ url_for('crear_proceso')}}">Crear proceso</a>
+    {%endif%}
 {% endblock %}
