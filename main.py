@@ -48,17 +48,18 @@ def get_ultimo_id():
     if lista_procesos:
         # Si la lista no está vacía, obtenemos el último elemento y su ID
         ultimo_proceso = lista_procesos[-1]
-        return ultimo_proceso.id
+        return ultimo_proceso.get_id()+1
     else:
         return 1
     
 @app.route('/crear_proceso',methods=["GET","POST"])
 def crear_proceso():
-    
-    global id_proceso # Vamos a usar la variable global
     create_proces_form = CreateProcesForm()
     #id_proceso += 1
     recursos = BCP.get_lista_recursos()
+     # Asigna los recursos al campo 'choices' del formulario
+    create_proces_form.recursos.choices = [(recurso.get_id_recurso(), recurso.get_nombre()) for recurso in recursos]
+    
     id_proceso = get_ultimo_id()
     #if create_proces_form.validate_on_submit():
     # Pasamos la lista de recursos al contexto para mostrarla en la vista
@@ -68,13 +69,19 @@ def crear_proceso():
         "id_proceso":id_proceso
     }
     if create_proces_form.validate_on_submit():
-        id_proceso = id_proceso
         tamanio = create_proces_form.tamanio.data
-        recursos = create_proces_form.recursos.data
+        recursos_seleccionados = create_proces_form.recursos.data  # IDs seleccionados
         hilos = create_proces_form.hilos.data
         preminencia = create_proces_form.preminencia.data
         
-        Procesos(id_proceso,tamanio,hilos,recursos,preminencia)    
+        proceso = Procesos(id_proceso,tamanio,hilos,recursos_seleccionados,preminencia)  
+        lista_procesos = BCP.get_procesos()
+        lista_procesos.append(proceso)
+        BCP.set_procesos(lista_procesos)
+        cola_nuevo= BCP.get_cola_nuevo()
+        cola_nuevo.append(proceso)
+        BCP.set_cola_nuevo(cola_nuevo)
+        
         flash("Proceso registrado correctamente")
         '''
         username = login_form.username.data
@@ -88,6 +95,13 @@ def crear_proceso():
 
 @app.route('/visualizar_procesos')
 def visualizar_procesos():
+    procesos = BCP.get_procesos()
+    cola_nuevo = BCP.get_cola_nuevo()
+    cola_listo = BCP.get_cola_listo()
+    cola_bloqueado = BCP.get_cola_bloqueado()
+    cola_ejecucion = BCP.get_cola_ejecucion()
+    cola_terminado = BCP.get_cola_terminado()
+
     return render_template('visualizar_procesos.html')
 
 @app.route('/visualizar_memoria')
