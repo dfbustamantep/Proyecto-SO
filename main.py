@@ -5,55 +5,61 @@ from app import create_app
 
 from BCP import BCP,Procesos,Recurso,Memoria
 
+
+BCP = BCP()
 # Lista donde se almacenan todos los procesos
-procesos = BCP.procesos
+procesos = BCP.get_procesos()
 
 # Colas de estados
-cola_nuevo = BCP.cola_nuevo
-cola_listo = BCP.cola_listo
-cola_bloqueado = BCP.cola_bloqueado
-cola_ejecucion = BCP.cola_ejecucion
-cola_terminado = BCP.cola_terminado
-
-# Lista de recursos
-recursos = BCP.recursos
+cola_nuevo = BCP.get_cola_nuevo()
+cola_listo = BCP.get_cola_listo()
+cola_bloqueado = BCP.get_cola_bloqueado()
+cola_ejecucion = BCP.get_cola_ejecucion()
+cola_terminado = BCP.get_cola_terminado()
 
 # Colas de recursos
-cola_cpu = BCP.cola_cpu
-cola_memoria = BCP.cola_memoria
-cola_disco = BCP.cola_disco
-cola_impresora = BCP.cola_impresora
+cola_cpu = BCP.get_cola_cpu()
+cola_memoria = BCP.get_cola_memoria()
+cola_disco = BCP.get_cola_disco()
+cola_impresora = BCP.get_cola_impresora()
 
     # tamaño memoria RAM(Principal)
-tamanio_MP = BCP.tamanio_MP
+tamanio_MP = BCP.get_tamanio_MP()
 
     # tamaño memoria virtual (2 veces el tamaño de la memoria principal)
-tamanio_MV = BCP.tamanio_MV 
+tamanio_MV = BCP.get_tamanio_MV() 
 
     # tamaño del marco de pagina 4 unidades 
-tamanio_marco = BCP.tamanio_marco
+tamanio_marco = BCP.get_tamanio_marco()
     
     #Porcentaje que se sube a cada memoria
-porcentaje_MP = BCP.porcentaje_MP
-porcentaje_MV = BCP.porcentaje_MV
+porcentaje_MP = BCP.get_porcentaje_MP()
+porcentaje_MV = BCP.get_porcentaje_MV()
 
     #Memorias
-memoria_principal = BCP.memoria_principal 
-memoria_virtual = BCP.memoria_virtual 
-
-id_proceso=len(procesos)
+memoria_principal = BCP.get_memoria_principal() 
+memoria_virtual = BCP.get_memoria_virtual() 
 
 #variable para manejar el id del proceso autoincremental
 app = create_app()
 
+def get_ultimo_id():
+    lista_procesos = BCP.get_procesos()
+    if lista_procesos:
+        # Si la lista no está vacía, obtenemos el último elemento y su ID
+        ultimo_proceso = lista_procesos[-1]
+        return ultimo_proceso.id
+    else:
+        return 1
+    
 @app.route('/crear_proceso',methods=["GET","POST"])
 def crear_proceso():
     
     global id_proceso # Vamos a usar la variable global
     create_proces_form = CreateProcesForm()
     #id_proceso += 1
-    
-    #id_proceso = len(procesos)+1
+    recursos = BCP.get_lista_recursos()
+    id_proceso = get_ultimo_id()
     #if create_proces_form.validate_on_submit():
     # Pasamos la lista de recursos al contexto para mostrarla en la vista
     context = {
