@@ -17,7 +17,7 @@ class BCP:
     # Cola que se usara para cada proceso
     cola_nuevo =[]
     cola_listo =[]
-    cola_bloqueado =[]
+    cola_bloqueado =[]  
     cola_ejecucion =[]
     cola_terminado =[]
 
@@ -67,13 +67,97 @@ class BCP:
     porcentaje_MP = 0.3
     porcentaje_MV = 0.7
 
-
     memoria_principal = Memoria("Memoria principal",tamanio_MP,tamanio_marco)
     memoria_virtual = Memoria("Memoria virtual",tamanio_MV,tamanio_marco)
 
-    #print(f"# de paginas memoria principal: {memoria_principal.get_paginas()}")
-    #print(f"# de paginas memoria virtual: {memoria_virtual.get_paginas()}")
+    # Getters y setters
+    def get_procesos(self):
+        return self.procesos
+    
+    def set_procesos(self,procesos:list[Procesos]):
+        self.procesos=procesos
+    
+    def get_cola_nuevo(self):
+        return self.cola_nuevo
+    
+    def set_cola_nuevo(self,cola_nuevo:list[Procesos]):
+        self.cola_nuevo=cola_nuevo
+        
+    def get_cola_listo(self):
+        return self.cola_listo
+    
+    def set_cola_listo(self,cola_listo:list[Procesos]):
+        self.cola_listo=cola_listo
+        
+    def get_cola_bloqueado(self):
+        return self.cola_bloqueado
+    
+    def set_cola_bloqueado(self,cola_bloqueado:list[Procesos]):
+        self.cola_bloqueado=cola_bloqueado
+    
+    def get_cola_ejecucion(self):
+        return self.cola_ejecucion
+    
+    def set_cola_ejecucion(self,cola_ejecucion:list[Procesos]):
+        self.cola_ejecucion=cola_ejecucion
+    
+    def get_cola_terminado(self):
+        return self.cola_terminado
+    
+    def set_cola_terminado(self,cola_terminado:list[Procesos]):
+        self.cola_terminado=cola_terminado
 
+    def get_lista_recursos(self):
+        return self.recursos
+    
+    def set_lista_recursos(self,lista_recursos:list[Recurso]):
+        self.recursos=lista_recursos 
+    
+    def get_cola_cpu(self):
+        return self.cola_cpu
+    
+    def set_cola_cpu(self,cola_cpu:list[Recurso]):
+        self.cola_cpu=cola_cpu
+        
+    def get_cola_memoria(self):
+        return self.cola_memoria
+    
+    def set_cola_memoria(self,cola_memoria:list[Recurso]):
+        self.cola_cpu=cola_memoria
+    
+    def get_cola_disco(self):
+        return self.cola_disco
+    
+    def set_cola_disco(self,cola_disco:list[Recurso]):
+        self.cola_disco=cola_disco
+        
+    def get_cola_impresora(self):
+        return self.cola_impresora
+    
+    def set_cola_impresora(self,cola_impresora:list[Recurso]):
+        self.cola_impresora=cola_impresora
+
+    def get_tamanio_MP(self):
+        return self.tamanio_MP
+
+    def get_tamanio_MV(self):
+        return self.tamanio_MV
+
+    def get_tamanio_marco(self):
+        return self.tamanio_marco   
+
+    def get_porcentaje_MP(self):
+        return self.porcentaje_MP
+
+    def get_porcentaje_MV(self):
+        return self.porcentaje_MV  
+
+    def get_memoria_principal(self):
+        return self.memoria_principal
+
+    def get_memoria_virtual(self):
+        return self.memoria_virtual 
+    
     def creacion_procesos(self):
         try:
             numero_procesos = int(input("Ingrese el número de procesos que desea crear: "))
