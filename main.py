@@ -132,11 +132,13 @@ def visualizar_estados():
     cola_ejecucion = BCP.get_cola_ejecucion()
     cola_terminado = BCP.get_cola_terminado()
     
-    print(cola_nuevo)
-    print(cola_listo)
-    print(cola_bloqueado)
-    print(cola_ejecucion)
-    print(cola_terminado)
+    print(f"Cola de nuevos: {cola_nuevo}")
+    for proceso in cola_nuevo:
+        print(f"Proceso ID: {proceso.get_id()}, Tamaño: {proceso.get_tamanio()}")
+    print(f"Cola de listos: {cola_listo}")
+    print(f"Cola de bloqueados: {cola_bloqueado}")
+    print(f"Cola de ejecucuion: {cola_ejecucion}")
+    print(f"Cola de terminado: {cola_terminado}")
     
     context={
         "cola_nuevo":cola_nuevo,
