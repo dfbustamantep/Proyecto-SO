@@ -11,7 +11,7 @@
 {% block content %}
     <h1>Colas de estados</h1>
     <div class="container mt-4">
-        <h2 >Cola de procesos con estado nuevo</h2>
+        <h2>Cola de procesos con estado nuevo</h2>
         <ol class="list-group">
             {% for proceso in cola_nuevo %}
                 <li class="list-group-item">Proceso {{proceso.get_id()}}</li>

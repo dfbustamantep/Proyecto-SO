@@ -12,10 +12,41 @@
     
     <h1>Colas de recursos</h1>
     <div class="container mt-4">
+        <h2>Cola de recurso CPU</h2>
+        <ol class="list-group">
+            {% for proceso in cola_cpu %}
+                <li class="list-group-item">Proceso {{proceso.get_id()}}</li>
+            {% else %}
+                <div class="alert alert-info" role="alert">No hay procesos en esta cola</div>
+            {% endfor %}
+        </ol>            
             
-            
-            
-            
+        <h2>Cola de recurso Memoria</h2>
+        <ol class="list-group">
+            {% for proceso in cola_memoria %}
+                <li class="list-group-item">Proceso {{proceso.get_id()}}</li>
+            {% else %}
+                <div class="alert alert-info" role="alert">No hay procesos en esta cola</div>
+            {% endfor %}
+        </ol>   
+        
+        <h2>Cola de recurso Disco</h2>
+        <ol class="list-group">
+            {% for proceso in cola_disco %}
+                <li class="list-group-item">Proceso {{proceso.get_id()}}</li>
+            {% else %}
+                <div class="alert alert-info" role="alert">No hay procesos en esta cola</div>
+            {% endfor %}
+        </ol>  
+
+        <h2>Cola de recurso Impresora</h2>
+        <ol class="list-group">
+            {% for proceso in cola_impresora %}
+                <li class="list-group-item">Proceso {{proceso.get_id()}}</li>
+            {% else %}
+                <div class="alert alert-info" role="alert">No hay procesos en esta cola</div>
+            {% endfor %}
+        </ol>  
 
     </div>
    
