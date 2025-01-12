@@ -107,12 +107,6 @@ def crear_proceso():
                 BCP.set_cola_impresora(cola_impresora)
                                        
         flash("Proceso registrado correctamente")
-        '''
-        username = login_form.username.data
-        session["username"]=username
-        flash("Nombre de usuario registrado correctamente")
-        '''
-        
         return redirect(url_for("index"))
     
     return render_template('crear_proceso.html',**context)
@@ -121,37 +115,83 @@ def crear_proceso():
 def visualizar_procesos():
     # Lista de proceos
     procesos = BCP.get_procesos()
+    
+    context={
+        "procesos":procesos,
+    }
+    
+    return render_template('visualizar_procesos.html',**context)
+
+
+@app.route('/visualizar_estados')
+def visualizar_estados():
     # Colas de estados
     cola_nuevo = BCP.get_cola_nuevo()
     cola_listo = BCP.get_cola_listo()
     cola_bloqueado = BCP.get_cola_bloqueado()
     cola_ejecucion = BCP.get_cola_ejecucion()
     cola_terminado = BCP.get_cola_terminado()
+    
+    print(cola_nuevo)
+    print(cola_listo)
+    print(cola_bloqueado)
+    print(cola_ejecucion)
+    print(cola_terminado)
+    
+    context={
+        "cola_nuevo":cola_nuevo,
+        "cola_listo":cola_listo,
+        "cola_bloqueado":cola_bloqueado,
+        "cola_ejecucion":cola_ejecucion,
+        "cola_terminado":cola_terminado
+    }
+    
+    return render_template('visualizar_estados.html',**context)
 
+@app.route('/visualizar_recursos')
+def visualizar_recursos():
     # Colas de recursos
     cola_cpu = BCP.get_cola_cpu()
     cola_memoria = BCP.get_cola_memoria()
     cola_disco = BCP.get_cola_disco()
     cola_impresora = BCP.get_cola_impresora()
     
+    print(cola_cpu)
+    print(cola_memoria)
+    print(cola_disco)
+    print(cola_impresora)
+    
     context={
-        "procesos":procesos,
-        "cola_nuevo":cola_nuevo,
-        "cola_listo":cola_listo,
-        "cola_bloqueado":cola_bloqueado,
-        "cola_ejecucion":cola_ejecucion,
-        "cola_terminado":cola_terminado,
         "cola_cpu":cola_cpu,
         "cola_memoria":cola_memoria,
         "cola_disco":cola_disco,
         "cola_impresora":cola_impresora
     }
     
-    return render_template('visualizar_procesos.html',**context)
+    return render_template('visualizar_recursos.html',**context)
 
 @app.route('/visualizar_memoria')
 def visualizar_memoria():
-    return render_template('visualizar_memoria.html')
+    tamanio_MP = BCP.get_tamanio_MP()
+    tamanio_MV = BCP.get_tamanio_MV()
+    tamanio_marco = BCP.get_tamanio_marco()
+    porcentaje_MP = BCP.get_porcentaje_MP()
+    porcentaje_MV = BCP.get_porcentaje_MV()
+    memoria_principal = BCP.get_memoria_principal()
+    memoria_virtual = BCP.get_memoria_virtual()
+
+    
+    context={
+        "tamanio_MP":tamanio_MP,
+        "tamanio_MV":tamanio_MV,
+        "tamanio_marco":tamanio_marco,
+        "porcentaje_MP":porcentaje_MP,
+        "porcentaje_MV":porcentaje_MV,
+        "memoria_principal":memoria_principal,
+        "memoria_virtual":memoria_virtual
+    }
+    
+    return render_template('visualizar_memoria.html',**context)
 
 @app.errorhandler(404)
 def not_found_endpoint(error):

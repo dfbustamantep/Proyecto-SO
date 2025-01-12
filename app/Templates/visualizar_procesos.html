@@ -13,33 +13,30 @@
     {%if procesos%}
         <div class="container mt-4">
             <h1>Procesos creados</h1>
-            <!--
-            {% for proceso in procesos %}
+            
+            <table class="table table-striped">
+                <tr>
+                    <th>ID Proceso</th>
+                    <th>Tamaño inicial</th>
+                    <th>Tamaño actual</th>
+                    <th>Recursos necesarios</th>
+                    <th>Estado</th>
+                    <th>Hilos</th>
+                    <th>Preminencia</th>
+                </tr>
+                {% for proceso in procesos %}
                     {{macros.render_procesos(proceso)}}
                 {% endfor %}
+            </table>
             
-            -->
-            {% for proceso in procesos %}
-            <h2>Proceso {{proceso.get_id()}}</h2>
-            <ul>
-                <li>Tamaño inicial: {{proceso.get_tamanio_inicial()}}</li>
-                <li>Tamaño: {{proceso.get_tamanio()}}</li>
-                <li>Recursos necesarios: {{ proceso.get_recursos() | length }}
-                    <ul>
-                        {% for recurso in proceso.get_recursos() %}
-                            <li>{{ recurso.get_nombre() }}</li>
-                        {% endfor %}
-                    </ul>
-                </li>
-                <li>Estado: {{proceso.get_estado()}}</li>
-                <li>Hilos: {{proceso.get_hilos()}}</li>
-                <li>Preminencia: {{proceso.get_preminencia()}}</li>
-            </ul>
-            {% endfor %}
-            
+            <div style="justify-content:center;display:flex;gap: 10px;">
+                <a href="{{ url_for('visualizar_estados') }}" class="btn btn-primary">Ver colas de estados</a>
+                <a href="{{ url_for('visualizar_recursos') }}" class="btn btn-primary">Ver colas de recursos</a>
+            </div>
+            </div>
         </div>
     {%else%}
         <h2>No hay procesos creados</h2>
-        <a href="{{ url_for('crear_proceso')}}" class="btn btn-primary"">Crear proceso</a>
+        <a href="{{ url_for('crear_proceso')}}" class="btn btn-primary">Crear proceso</a>
     {%endif%}
 {% endblock %}

@@ -1,0 +1,29 @@
+{% extends 'base.html'%}
+{% import 'bootstrap/wtf.html' as wtf%}
+{% import 'macros.html' as macros %}
+
+<!--Heredamos de nuestro archivo base-->
+{%block title %}
+    {{super()}}
+    Ver procesos
+{% endblock %}
+
+{% block content %}
+    
+    {%if context%}
+        <div class="container mt-4">
+            <h1>Colas de estados</h1>
+            
+            <table class="table table-striped">
+                {% for proceso in procesos %}
+                    {{macros.render_cola_estados(proceso)}}
+                {% endfor %}
+            </table>
+            
+
+        </div>
+    {%else%}
+        <h2>No hay procesos creados</h2>
+        <a href="{{ url_for('crear_proceso')}}" class="btn btn-primary">Crear proceso</a>
+    {%endif%}
+{% endblock %}

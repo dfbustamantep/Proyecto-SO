@@ -1,4 +1,22 @@
 {%macro render_procesos(proceso)%}
+    
+    <tr>
+        <td>{{proceso.get_id()}}</td>
+        <td> {{proceso.get_tamanio_inicial()}}</td>
+        <td>{{proceso.get_tamanio()}}</td>
+        <td>
+            <ul>
+                {% for recurso in proceso.get_recursos() %}
+                    <li>{{ recurso.get_nombre() }}</li>
+                {% endfor %}
+            </ul>
+        </td>
+        <td> {{proceso.get_estado()}}</td>
+        <td> {{proceso.get_hilos()}}</td>
+        <td> {{proceso.get_preminencia()}}</td>
+    </tr> 
+
+    <!--
     <h2>Proceso {{proceso.get_id()}}</h2>
     <ul>
         <li>Tamaño inicial: {{proceso.get_tamanio_inicial()}}</li>
@@ -14,4 +32,25 @@
         <li>Hilos: {{proceso.get_hilos()}}</li>
         <li>Preminencia: {{proceso.get_preminencia()}}</li>
     </ul>
+    -->
+{%endmacro%}
+
+{%macro render_cola_estados(proceso)%}
+    
+    <tr>
+        <td>{{proceso.get_id()}}</td>
+        <td> {{proceso.get_tamanio_inicial()}}</td>
+        <td>{{proceso.get_tamanio()}}</td>
+        <td>
+            <ul>
+                {% for recurso in proceso.get_recursos() %}
+                    <li>{{ recurso.get_nombre() }}</li>
+                {% endfor %}
+            </ul>
+        </td>
+        <td> {{proceso.get_estado()}}</td>
+        <td> {{proceso.get_hilos()}}</td>
+        <td> {{proceso.get_preminencia()}}</td>
+    </tr> 
+
 {%endmacro%}
