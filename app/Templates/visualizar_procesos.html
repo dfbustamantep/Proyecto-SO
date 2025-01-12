@@ -1,5 +1,7 @@
 {% extends 'base.html'%}
 {% import 'bootstrap/wtf.html' as wtf%}
+{% import 'macros.html' as macros %}
+
 <!--Heredamos de nuestro archivo base-->
 {%block title %}
     {{super()}}
@@ -9,13 +11,32 @@
 {% block content %}
     
     {%if procesos%}
-        <div class="container">
+        <div class="container mt-4">
             <h1>Procesos creados</h1>
-            <ul>
-                {% for proceso in procesos %}
-                    {{macros.render_items(proceso)}}
+            <!--
+            {% for proceso in procesos %}
+                    {{macros.render_procesos(proceso)}}
                 {% endfor %}
+            
+            -->
+            {% for proceso in procesos %}
+            <h2>Proceso {{proceso.get_id()}}</h2>
+            <ul>
+                <li>Tamaño inicial: {{proceso.get_tamanio_inicial()}}</li>
+                <li>Tamaño: {{proceso.get_tamanio()}}</li>
+                <li>Recursos necesarios: {{ proceso.get_recursos() | length }}
+                    <ul>
+                        {% for recurso in proceso.get_recursos() %}
+                            <li>{{ recurso.get_nombre() }}</li>
+                        {% endfor %}
+                    </ul>
+                </li>
+                <li>Estado: {{proceso.get_estado()}}</li>
+                <li>Hilos: {{proceso.get_hilos()}}</li>
+                <li>Preminencia: {{proceso.get_preminencia()}}</li>
             </ul>
+            {% endfor %}
+            
         </div>
     {%else%}
         <h2>No hay procesos creados</h2>

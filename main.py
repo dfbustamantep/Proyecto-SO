@@ -69,12 +69,17 @@ def crear_proceso():
         "id_proceso":id_proceso
     }
     if create_proces_form.validate_on_submit():
+        # Datos del formulario
         tamanio = create_proces_form.tamanio.data
         recursos_seleccionados = create_proces_form.recursos.data  # IDs seleccionados
         hilos = create_proces_form.hilos.data
         preminencia = create_proces_form.preminencia.data
         
+          # Mapear los IDs a objetos de recursos
+        recursos_seleccionados = [r for r in recursos if str(r.get_id_recurso()) in recursos_seleccionados]
+        # Creacion proceso
         proceso = Procesos(id_proceso,tamanio,hilos,recursos_seleccionados,preminencia)  
+        # Agregar procesos a lista de procesos,cola de nuevo y cola de los recursos respectivos
         lista_procesos = BCP.get_procesos()
         lista_procesos.append(proceso)
         BCP.set_procesos(lista_procesos)
@@ -82,6 +87,25 @@ def crear_proceso():
         cola_nuevo.append(proceso)
         BCP.set_cola_nuevo(cola_nuevo)
         
+        cola_cpu = BCP.get_cola_cpu()
+        cola_memoria = BCP.get_cola_memoria()
+        cola_disco = BCP.get_cola_disco()
+        cola_impresora = BCP.get_cola_impresora()
+        
+        for rec in recursos_seleccionados:
+            if rec.get_nombre() == "CPU":
+                cola_cpu.append(proceso)
+                BCP.set_cola_cpu(cola_cpu)
+            elif rec.get_nombre() == "Memoria RAM":
+                cola_memoria.append(proceso)
+                BCP.set_cola_memoria(cola_memoria)
+            elif rec.get_nombre() == "Disco Duro":
+                cola_disco.append(proceso)
+                BCP.set_cola_disco(cola_disco)
+            elif rec.get_nombre() == "Impresora":
+                cola_impresora.append(proceso)
+                BCP.set_cola_impresora(cola_impresora)
+                                       
         flash("Proceso registrado correctamente")
         '''
         username = login_form.username.data
@@ -95,14 +119,35 @@ def crear_proceso():
 
 @app.route('/visualizar_procesos')
 def visualizar_procesos():
+    # Lista de proceos
     procesos = BCP.get_procesos()
+    # Colas de estados
     cola_nuevo = BCP.get_cola_nuevo()
     cola_listo = BCP.get_cola_listo()
     cola_bloqueado = BCP.get_cola_bloqueado()
     cola_ejecucion = BCP.get_cola_ejecucion()
     cola_terminado = BCP.get_cola_terminado()
 
-    return render_template('visualizar_procesos.html')
+    # Colas de recursos
+    cola_cpu = BCP.get_cola_cpu()
+    cola_memoria = BCP.get_cola_memoria()
+    cola_disco = BCP.get_cola_disco()
+    cola_impresora = BCP.get_cola_impresora()
+    
+    context={
+        "procesos":procesos,
+        "cola_nuevo":cola_nuevo,
+        "cola_listo":cola_listo,
+        "cola_bloqueado":cola_bloqueado,
+        "cola_ejecucion":cola_ejecucion,
+        "cola_terminado":cola_terminado,
+        "cola_cpu":cola_cpu,
+        "cola_memoria":cola_memoria,
+        "cola_disco":cola_disco,
+        "cola_impresora":cola_impresora
+    }
+    
+    return render_template('visualizar_procesos.html',**context)
 
 @app.route('/visualizar_memoria')
 def visualizar_memoria():
