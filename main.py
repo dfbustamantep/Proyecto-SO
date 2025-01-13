@@ -1,3 +1,4 @@
+import math
 from app.forms import CreateProcesForm
 from flask import request,make_response,redirect,render_template,session,url_for,flash
 
@@ -70,12 +71,34 @@ def crear_proceso():
     }
     if create_proces_form.validate_on_submit():
         # Datos del formulario
-        tamanio = create_proces_form.tamanio.data
-        recursos_seleccionados = create_proces_form.recursos.data  # IDs seleccionados
+        tamanio = int(create_proces_form.tamanio.data)
+         # Math.ceil se usa para aproximar al siguiente entero en caso de que la division no se exacta
+         
+        paginas_proceso = math.ceil(tamanio/BCP.get_tamanio_marco())
+        paginas_memoria_principal=math.ceil(paginas_proceso*BCP.get_porcentaje_MP())
+        paginas_memoria_virtual=paginas_proceso-paginas_memoria_principal
+        
+        memoria_principal = BCP.get_memoria_principal()
+        memoria_virtual = BCP.get_memoria_virtual()
+        
+        print(f"El proceso requiere el uso de {paginas_proceso} paginas,de las cuales {BCP.get_porcentaje_MP()*100}% van a la memoria principal y el resto a memoria virtual")
+        if memoria_principal.get_paginas_dipsonibles()>= paginas_memoria_principal:
+            print("El proceso tiene espacio suficiente en memoria RAM y virtual para ser creado")
+                
+            ultimo_id = memoria_principal.set_paginas_ocuapadas(paginas_memoria_principal,"p"+str(id_proceso),tamanio_marco,00)
+            memoria_virtual.set_paginas_ocuapadas(paginas_memoria_virtual,"p"+str(id_proceso),tamanio_marco,ultimo_id)
+                
+        elif memoria_virtual.get_paginas_dipsonibles()>= paginas_proceso:
+            print("El proceso no tiene espacio suficiente en memoria RAM,si embargo se puede crear en la memoria virtual")
+            memoria_virtual.set_paginas_ocuapadas(paginas_memoria_virtual,"p"+str(id_proceso),tamanio_marco)
+        else:
+            print("El proceso no tiene espacio suficiente en memoria RAM ni en memoria virtual para ser creado")
+            return 
+        
+        recursos_seleccionados = create_proces_form.recursos.data  #IDs seleccionados
         hilos = create_proces_form.hilos.data
         preminencia = create_proces_form.preminencia.data
-        
-          # Mapear los IDs a objetos de recursos
+        # Mapear los IDs a objetos de recursos
         recursos_seleccionados = [r for r in recursos if str(r.get_id_recurso()) in recursos_seleccionados]
         # Creacion proceso
         proceso = Procesos(id_proceso,tamanio,hilos,recursos_seleccionados,preminencia)  

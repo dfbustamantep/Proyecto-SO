@@ -46,7 +46,7 @@ class Memoria:
         return self.__paginas - sum(1 for marco in self.__matriz_memoria if marco != 'O')
     
     def set_paginas_ocuapadas(self,numero_paginas:int,proceso:str,tamanio_pagina:int,id_pagina_proceso:int=00):
-        # Mientras el numero de paginas que ocupa el proceso es diferente de 0
+        # Mientras el numero de paginas que ocupa el proceso sea mayor que 0
         while numero_paginas>0:
             id_pagina_proceso += 1 
             # Generamos un indice aleatorio al cual vamos a ocupar con el proceso
