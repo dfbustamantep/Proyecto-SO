@@ -81,23 +81,26 @@ def crear_proceso():
         memoria_principal = BCP.get_memoria_principal()
         memoria_virtual = BCP.get_memoria_virtual()
         
-        print(f"El proceso requiere el uso de {paginas_proceso} paginas,de las cuales {BCP.get_porcentaje_MP()*100}% van a la memoria principal y el resto a memoria virtual")
-        if memoria_principal.get_paginas_dipsonibles()>= paginas_memoria_principal:
-            print("El proceso tiene espacio suficiente en memoria RAM y virtual para ser creado")
-                
-            ultimo_id = memoria_principal.set_paginas_ocuapadas(paginas_memoria_principal,"p"+str(id_proceso),tamanio_marco,00)
-            memoria_virtual.set_paginas_ocuapadas(paginas_memoria_virtual,"p"+str(id_proceso),tamanio_marco,ultimo_id)
-                
-        elif memoria_virtual.get_paginas_dipsonibles()>= paginas_proceso:
-            print("El proceso no tiene espacio suficiente en memoria RAM,si embargo se puede crear en la memoria virtual")
-            memoria_virtual.set_paginas_ocuapadas(paginas_memoria_virtual,"p"+str(id_proceso),tamanio_marco)
+         # Validación de memoria disponible
+         #and \ me permite poner el resto de codigo abajo
+        if memoria_principal.get_paginas_dipsonibles() < paginas_memoria_principal and \
+            memoria_virtual.get_paginas_dipsonibles() < paginas_memoria_virtual:
+            flash("No hay suficiente memoria disponible para crear el proceso.", "danger")
+            return redirect(url_for("crear_proceso"))
+
+        # Operaciones de asignación de memoria
+        if memoria_principal.get_paginas_dipsonibles() >= paginas_memoria_principal:
+            ultimo_id = memoria_principal.set_paginas_ocuapadas(paginas_memoria_principal, f"p{id_proceso}",
+                                                                BCP.get_tamanio_marco(), 0)
+            memoria_virtual.set_paginas_ocuapadas(paginas_memoria_virtual, f"p{id_proceso}", BCP.get_tamanio_marco(),
+                                                  ultimo_id)
         else:
-            print("El proceso no tiene espacio suficiente en memoria RAM ni en memoria virtual para ser creado")
-            return 
+            memoria_virtual.set_paginas_ocuapadas(paginas_proceso, f"p{id_proceso}", BCP.get_tamanio_marco())
         
         recursos_seleccionados = create_proces_form.recursos.data  #IDs seleccionados
         hilos = create_proces_form.hilos.data
         preminencia = create_proces_form.preminencia.data
+        print(preminencia)
         # Mapear los IDs a objetos de recursos
         recursos_seleccionados = [r for r in recursos if str(r.get_id_recurso()) in recursos_seleccionados]
         # Creacion proceso
@@ -106,29 +109,58 @@ def crear_proceso():
         lista_procesos = BCP.get_procesos()
         lista_procesos.append(proceso)
         BCP.set_procesos(lista_procesos)
-        cola_nuevo= BCP.get_cola_nuevo()
-        cola_nuevo.append(proceso)
-        BCP.set_cola_nuevo(cola_nuevo)
         
+        """  
+       if preminencia == "Si":
+            cola_nuevo= BCP.get_cola_nuevo()
+            cola_nuevo.insert(0,proceso)
+            BCP.set_cola_nuevo(cola_nuevo)
+            
+            cola_cpu = BCP.get_cola_cpu()
+            cola_memoria = BCP.get_cola_memoria()
+            cola_disco = BCP.get_cola_disco()
+            cola_impresora = BCP.get_cola_impresora()
+            
+            for rec in recursos_seleccionados:
+                if rec.get_nombre() == "CPU" and proceso not in cola_cpu:
+                    # insert inserta en la posicion de la lista que le indicamos,al tener preminencia se agrega en la primera posicion
+                    cola_cpu.insert(0,proceso)
+                    BCP.set_cola_cpu(cola_cpu)
+                elif rec.get_nombre() == "Memoria RAM" and proceso not in cola_memoria:
+                    cola_memoria.insert(0,proceso)
+                    BCP.set_cola_memoria(cola_memoria)
+                elif rec.get_nombre() == "Disco Duro" and proceso not in cola_disco:
+                    cola_disco.insert(0,proceso)
+                    BCP.set_cola_disco(cola_disco)
+                elif rec.get_nombre() == "Impresora" and proceso not in cola_impresora:
+                    cola_impresora.insert(0,proceso)
+                    BCP.set_cola_impresora(cola_impresora)
+        else: 
+        """
+        cola_nuevo= BCP.get_cola_nuevo()
+        if proceso not in cola_nuevo:
+            cola_nuevo.append(proceso)
+        BCP.set_cola_nuevo(cola_nuevo)
+            
         cola_cpu = BCP.get_cola_cpu()
         cola_memoria = BCP.get_cola_memoria()
         cola_disco = BCP.get_cola_disco()
         cola_impresora = BCP.get_cola_impresora()
-        
+            
         for rec in recursos_seleccionados:
-            if rec.get_nombre() == "CPU":
+            if rec.get_nombre() == "CPU" and proceso not in cola_cpu:
                 cola_cpu.append(proceso)
                 BCP.set_cola_cpu(cola_cpu)
-            elif rec.get_nombre() == "Memoria RAM":
+            elif rec.get_nombre() == "Memoria RAM" and proceso not in cola_memoria:
                 cola_memoria.append(proceso)
                 BCP.set_cola_memoria(cola_memoria)
-            elif rec.get_nombre() == "Disco Duro":
+            elif rec.get_nombre() == "Disco Duro" and proceso not in cola_disco:
                 cola_disco.append(proceso)
                 BCP.set_cola_disco(cola_disco)
-            elif rec.get_nombre() == "Impresora":
+            elif rec.get_nombre() == "Impresora" and proceso not in cola_impresora:
                 cola_impresora.append(proceso)
                 BCP.set_cola_impresora(cola_impresora)
-                                       
+                           
         flash("Proceso registrado correctamente")
         return redirect(url_for("index"))
     

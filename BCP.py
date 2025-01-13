@@ -46,7 +46,7 @@ class BCP:
     2**10=1024
     '''
     # tamaño memoria RAM(Principal)
-    tamanio_MP = 2**7
+    tamanio_MP = 2**8
 
     # tamaño memoria virtual (2 veces el tamaño de la memoria principal)
     tamanio_MV = tamanio_MP*2
