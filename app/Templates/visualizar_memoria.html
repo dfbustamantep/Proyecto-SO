@@ -6,6 +6,67 @@
     Ver memoria
 {% endblock %}
 
+    
 {% block content %}
-    <h1>Estado memorias</h1>
+    <h1>Estado de las memorias</h1>
+    <h4>Tamaño de la memoria principal : {{tamanio_MP}}</h4>
+    <h4>Tamaño de la memoria virtual : {{tamanio_MV}}</h4>
+    <h4>Tamaño del marco : {{tamanio_marco}}</h4>
+    <h4>Procentaje que se sube a memoria principal : {{porcentaje_MP*100}}%</h4>
+    <h4>Procentaje que se sube a memoia virtual : {{porcentaje_MV*100}}%</h4>
+
+    <h2>Memoria Principal</h2>
+    <div class="table-responsive">
+        <table class="table table-bordered ">
+            <tbody>
+                {% set matriz_MP = memoria_principal.get_matriz_memoria() %}
+                {% for i in range(0, matriz_MP|length, tamanio_marco) %}
+                <tr>
+                    {% for j in range(tamanio_marco) %}
+                        {% set index = i + j %}
+                        {% if index < matriz_MP|length %}
+                        <td class="border border-dark {% if matriz_MP[index] == 'SO' %}bg-primary text-white{% elif matriz_MP[index] == 'O' %}bg-white{% else %}bg-secondary text-white{% endif %}">
+                                {% if matriz_MP[index] != 'O' %}
+                                    {{ matriz_MP[index] }}
+                                {% endif %}
+                            </td>
+                        {% endif %}
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    
+    <h2>Memoria Virtual</h2>
+    <div class="table-responsive">
+        <table class="table table-bordered">
+            <tbody>
+                {% set matriz_MV = memoria_virtual.get_matriz_memoria() %}
+                {% for i in range(0, matriz_MV|length, tamanio_marco) %}
+                <tr>
+                    {% for j in range(tamanio_marco) %}
+                        {% set index = i + j %}
+                        {% if index < matriz_MV|length %}
+                        <td class="border border-dark {% if matriz_MV[index] == 'SO' %}bg-primary text-white{% elif matriz_MV[index] == 'O' %}bg-white{% else %}bg-secondary text-white{% endif %}">
+                                {% if matriz_MV[index] != 'O' %}
+                                    {{ matriz_MV[index] }}
+                                {% endif %}
+                            </td>
+                        {% endif %}
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    
+    
+    
+    
+    <!--<h2>Memoria Principal</h2>-->
+    <!--{{memoria_principal.get_matriz_memoria()}}-->
+
+    <!--<h2>Memoria Virtual</h2>-->
+    <!--{{memoria_virtual.get_matriz_memoria()}}-->
 {% endblock %}
