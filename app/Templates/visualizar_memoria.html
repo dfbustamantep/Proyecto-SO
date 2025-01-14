@@ -17,12 +17,12 @@
 
     <h2>Memoria Principal</h2>
     <div class="table-responsive">
-        <table class="table table-bordered ">
+        <table class="table table-custom">
             <tbody>
                 {% set matriz_MP = memoria_principal.get_matriz_memoria() %}
-                {% for i in range(0, matriz_MP|length, tamanio_marco) %}
+                {% for i in range(tamanio_marco)  %}
                 <tr>
-                    {% for j in range(tamanio_marco) %}
+                    {% for j in range(0, matriz_MP|length, tamanio_marco) %}
                         {% set index = i + j %}
                         {% if index < matriz_MP|length %}
                         <td class="border border-dark {% if matriz_MP[index] == 'SO' %}bg-primary text-white{% elif matriz_MP[index] == 'O' %}bg-white{% else %}bg-secondary text-white{% endif %}">
@@ -40,12 +40,12 @@
     
     <h2>Memoria Virtual</h2>
     <div class="table-responsive">
-        <table class="table table-bordered">
+        <table class="table table-custom">
             <tbody>
                 {% set matriz_MV = memoria_virtual.get_matriz_memoria() %}
-                {% for i in range(0, matriz_MV|length, tamanio_marco) %}
+                {% for i in range(tamanio_marco) %}
                 <tr>
-                    {% for j in range(tamanio_marco) %}
+                    {% for j in  range(0, matriz_MV|length, tamanio_marco) %}
                         {% set index = i + j %}
                         {% if index < matriz_MV|length %}
                         <td class="border border-dark {% if matriz_MV[index] == 'SO' %}bg-primary text-white{% elif matriz_MV[index] == 'O' %}bg-white{% else %}bg-secondary text-white{% endif %}">

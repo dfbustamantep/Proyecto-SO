@@ -12,3 +12,24 @@ h1{
     padding: 100px 20px;
 }
 
+    /* Aseguramos que las tablas tengan bordes y las celdas sean cuadradas */
+    .table-custom td {
+        width: 40px; /* Ajusta el tamaño de las celdas según lo que necesites */
+        height: 40px;
+        text-align: center; /* Centrar contenido horizontalmente */
+        vertical-align: middle; /* Centrar contenido verticalmente */
+        border: 1px solid black; /* Bordes negros */
+        
+    }
+
+    .table-custom {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center; /* Centra horizontalmente */
+        align-items: center; /* Centra verticalmente */
+        margin: 0 auto;
+        display: flex;
+        flex-wrap: wrap;
+        
+    }
+
