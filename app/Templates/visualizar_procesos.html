@@ -32,6 +32,9 @@
             <div style="justify-content:center;display:flex;gap: 10px;">
                 <a href="{{ url_for('visualizar_estados') }}" class="btn btn-primary">Ver colas de estados</a>
                 <a href="{{ url_for('visualizar_recursos') }}" class="btn btn-primary">Ver colas de recursos</a>
+                <form action="{{ url_for('ejecutar_procesos') }}" method="post" style="display:inline;">
+                    <button type="submit" class="btn btn-primary">Ejecutar 1 vez</button>
+                </form>
             </div>
             </div>
         </div>

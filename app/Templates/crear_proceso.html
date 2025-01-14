@@ -17,6 +17,8 @@
 
             <div class="mb-4">
                 {{ create_proces_form.tamanio.label(class="form-label") }}
+                <span class="badge bg-warning text-dark">RAM disponible: {{memoria_principal_disponible}}</span>
+                <span class="badge bg-warning text-dark">Memoria virtual disponible: {{memoria_virtual_disponible}}</span>
                 {{ create_proces_form.tamanio(class="form-control") }}
                 {% for error in create_proces_form.tamanio.errors %}
                     <div class="text-danger">{{ error }}</div>

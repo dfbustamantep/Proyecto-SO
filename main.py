@@ -60,24 +60,28 @@ def crear_proceso():
     recursos = BCP.get_lista_recursos()
      # Asigna los recursos al campo 'choices' del formulario
     create_proces_form.recursos.choices = [(recurso.get_id_recurso(), recurso.get_nombre()) for recurso in recursos]
-    
     id_proceso = get_ultimo_id()
+    memoria_principal_disponible = BCP.get_memoria_principal().get_paginas_dipsonibles() * BCP.get_tamanio_marco()
+    memoria_virtual_disponible = BCP.get_memoria_virtual().get_paginas_dipsonibles() * BCP.get_tamanio_marco()
+
     #if create_proces_form.validate_on_submit():
     # Pasamos la lista de recursos al contexto para mostrarla en la vista
     context = {
         "create_proces_form":create_proces_form,
         "recursos": recursos,
-        "id_proceso":id_proceso
+        "id_proceso":id_proceso,
+        "memoria_principal_disponible":memoria_principal_disponible,
+        "memoria_virtual_disponible":memoria_virtual_disponible
     }
     if create_proces_form.validate_on_submit():
         # Datos del formulario
         tamanio = int(create_proces_form.tamanio.data)
-         # Math.ceil se usa para aproximar al siguiente entero en caso de que la division no se exacta
-         
+        print(f"Tamanio proceso {id_proceso} :{tamanio}")
+         # Math.ceil se usa para aproximar al siguiente entero en caso de que la division no se exacta 
         paginas_proceso = math.ceil(tamanio/BCP.get_tamanio_marco())
         paginas_memoria_principal=math.ceil(paginas_proceso*BCP.get_porcentaje_MP())
         paginas_memoria_virtual=paginas_proceso-paginas_memoria_principal
-        
+        print(f"Paginas proceso {id_proceso} :{paginas_proceso},\npaginas memoria principal:{paginas_memoria_principal},\npaginas memoria virtual:{paginas_memoria_virtual}")
         memoria_principal = BCP.get_memoria_principal()
         memoria_virtual = BCP.get_memoria_virtual()
         
@@ -100,7 +104,7 @@ def crear_proceso():
         recursos_seleccionados = create_proces_form.recursos.data  #IDs seleccionados
         hilos = create_proces_form.hilos.data
         preminencia = create_proces_form.preminencia.data
-        print(preminencia)
+        print(f"Preminencia {preminencia}")
         # Mapear los IDs a objetos de recursos
         recursos_seleccionados = [r for r in recursos if str(r.get_id_recurso()) in recursos_seleccionados]
         # Creacion proceso
@@ -111,6 +115,7 @@ def crear_proceso():
         BCP.set_procesos(lista_procesos)
         
         """  
+        Para cuando hay preminencia
        if preminencia == "Si":
             cola_nuevo= BCP.get_cola_nuevo()
             cola_nuevo.insert(0,proceso)
@@ -249,6 +254,12 @@ def visualizar_memoria():
     }
     
     return render_template('visualizar_memoria.html',**context)
+
+@app.route('/ejecutar_procesos',methods=['POST'])
+def ejecutar_procesos():
+    BCP.ejecutar()
+    flash("Se realizo una ejecucion","succes")
+    return redirect(url_for("visualizar_procesos"))
 
 @app.errorhandler(404)
 def not_found_endpoint(error):
