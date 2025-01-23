@@ -113,10 +113,12 @@ def crear_proceso():
         lista_procesos = BCP.get_procesos()
         lista_procesos.append(proceso)
         BCP.set_procesos(lista_procesos)
+        cola_nuevo.append(proceso)
         
-        """  
-        Para cuando hay preminencia
-       if preminencia == "Si":
+        '''
+        
+        #Para cuando hay preminencia
+        if preminencia == "Si":
             cola_nuevo= BCP.get_cola_nuevo()
             cola_nuevo.insert(0,proceso)
             BCP.set_cola_nuevo(cola_nuevo)
@@ -141,12 +143,12 @@ def crear_proceso():
                     cola_impresora.insert(0,proceso)
                     BCP.set_cola_impresora(cola_impresora)
         else: 
-        """
+        
         cola_nuevo= BCP.get_cola_nuevo()
         if proceso not in cola_nuevo:
             cola_nuevo.append(proceso)
         BCP.set_cola_nuevo(cola_nuevo)
-            
+        '''
         cola_cpu = BCP.get_cola_cpu()
         cola_memoria = BCP.get_cola_memoria()
         cola_disco = BCP.get_cola_disco()
