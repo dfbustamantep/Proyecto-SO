@@ -447,8 +447,9 @@ class BCP:
             else:
                 # Si no están todos los recursos, el proceso regresa a 'listo'
                 print(f"Proceso {proceso.get_id()} no tiene todos los recursos disponibles. Pasa a la cola 'bloqueado'.")
-                self.cola_bloqueado.append(proceso)
-                self.cambiar_estado("bloqueado",proceso)
+                if proceso not in self.cola_bloqueado:
+                    #self.cola_bloqueado.append(proceso)
+                    self.cambiar_estado("bloqueado",proceso)
                 
         self.mostrar_procesos()
         print()
@@ -465,13 +466,17 @@ class BCP:
             
             # Realizamos el cambio de estado,pero para hacer este cambio verificamos que este si se pueda hacer teniendo en cuenta la grafica que esta en el reademe
             if nuevo_estado == "listo" and (estado_anterior=="nuevo" or estado_anterior=="ejecucion" or estado_anterior=="bloqueado"):
-               self.cola_listo.append(proceso)
+                if proceso not in self.cola_listo:
+                    self.cola_listo.append(proceso)
             elif nuevo_estado == "bloqueado" and estado_anterior=="ejecucion":
-               self.cola_bloqueado.append(proceso)
+                if proceso not in self.cola_bloqueado:
+                    self.cola_bloqueado.append(proceso)
             elif nuevo_estado == "ejecucion" and estado_anterior == "listo":
-                self.cola_ejecucion.append(proceso)
+                if proceso not in self.cola_ejecucion:
+                    self.cola_ejecucion.append(proceso)
             elif nuevo_estado == "terminado" and estado_anterior == "ejecucion":
-                self.cola_terminado.append(proceso)
+                if proceso not in self.cola_terminado:
+                    self.cola_terminado.append(proceso)
             else:
                 print("El cambio de estado no se puede realizar")
 
