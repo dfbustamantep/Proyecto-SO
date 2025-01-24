@@ -329,19 +329,19 @@ class BCP:
     
     def ejecutar(self):
         # Pasamos los elementos que estan en la cola de bloqueado a la cola de listo para mirar si ya se pueden ejecutar
-        while self.cola_bloqueado:
+        if self.cola_bloqueado:
             # Guardamos el proceso que este de primeras en la cola de nuevo,le cambiamos el estado a listo,y lo añadimos a la cola de listo
             proceso = self.cola_bloqueado.pop(0)
             self.cambiar_estado("listo",proceso)
             
         # Pasamos los elementos que estan en la cola de nuevo a la cola de listo        
-        while self.cola_nuevo:
+        if self.cola_nuevo:
             # Guardamos el proceso que este de primeras en la cola de nuevo,le cambiamos el estado a listo,y lo añadimos a la cola de listo
             proceso = self.cola_nuevo.pop(0)
             self.cambiar_estado("listo",proceso)
           
         # Pasamos los elementos que estan en la cola de listo a ejecucion        
-        while self.cola_listo:
+        if self.cola_listo:
             # Guardamos el proceso que este de primeras en la cola de listo,le cambiamos el estado a listo,y lo añadimos a la cola de listo
             proceso = self.cola_listo.pop(0)
             recursos_necesarios = proceso.get_recursos()
