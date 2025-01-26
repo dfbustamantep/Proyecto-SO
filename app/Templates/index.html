@@ -1,6 +1,5 @@
-
 {% extends 'base.html'%}
-{% import 'bootstrap/wtf.html' as wtf%}
+{% import 'bootstrap/wtf.html' as wtf%} 
 <!--Heredamos de nuestro archivo base-->
 {%block title %}
     {{super()}}
@@ -8,8 +7,13 @@
 {% endblock %}
 
 {% block content %}
-    <div class="hero">
+    <section class="hero">
         <h1>Simulador funcionamiento de un Sistema Operativo</h1>
-        <h4>En esta aplicacion encontrara funcionalidades de procesos,gestion de memoria y uso de un sistema multihilo</h4>
-    </div>
-{% endblock %}
+        <h4>Explora funcionalidades de gestion de procesos,memoria y uso de un sistema multihilo</h4>
+    </section>
+    <section style="justify-content:center;display:flex;gap: 10px;">
+        <a href="{{ url_for('crear_proceso') }}" class="btn btn-primary">Crear Proceso</a>
+        <a href="{{ url_for('visualizar_procesos') }}" class="btn btn-secondary">Ver Procesos</a>
+    </section>
+
+{% endblock %} 
