@@ -8,21 +8,6 @@ from BCP import BCP,Procesos,Recurso,Memoria
 
 
 BCP = BCP()
-# Lista donde se almacenan todos los procesos
-procesos = BCP.get_procesos()
-
-# Colas de estados
-cola_nuevo = BCP.get_cola_nuevo()
-cola_listo = BCP.get_cola_listo()
-cola_bloqueado = BCP.get_cola_bloqueado()
-cola_ejecucion = BCP.get_cola_ejecucion()
-cola_terminado = BCP.get_cola_terminado()
-
-# Colas de recursos
-cola_cpu = BCP.get_cola_cpu()
-cola_memoria = BCP.get_cola_memoria()
-cola_disco = BCP.get_cola_disco()
-cola_impresora = BCP.get_cola_impresora()
 
     # tamaño memoria RAM(Principal)
 tamanio_MP = BCP.get_tamanio_MP()
@@ -55,6 +40,8 @@ def get_ultimo_id():
     
 @app.route('/crear_proceso',methods=["GET","POST"])
 def crear_proceso():
+    cola_nuevo = BCP.get_cola_nuevo()
+    
     create_proces_form = CreateProcesForm()
     #id_proceso += 1
     recursos = BCP.get_lista_recursos()
@@ -81,7 +68,7 @@ def crear_proceso():
         paginas_proceso = math.ceil(tamanio/BCP.get_tamanio_marco())
         paginas_memoria_principal=math.ceil(paginas_proceso*BCP.get_porcentaje_MP())
         paginas_memoria_virtual=paginas_proceso-paginas_memoria_principal
-        print(f"Paginas proceso {id_proceso} :{paginas_proceso},\npaginas memoria principal:{paginas_memoria_principal},\npaginas memoria virtual:{paginas_memoria_virtual}")
+        print(f"Paginas proceso {id_proceso} :{paginas_proceso}\npaginas memoria principal:{paginas_memoria_principal}\npaginas memoria virtual:{paginas_memoria_virtual}")
         memoria_principal = BCP.get_memoria_principal()
         memoria_virtual = BCP.get_memoria_virtual()
         
@@ -102,11 +89,16 @@ def crear_proceso():
             memoria_virtual.set_paginas_ocuapadas(paginas_proceso, f"p{id_proceso}", BCP.get_tamanio_marco())
         
         recursos_seleccionados = create_proces_form.recursos.data  #IDs seleccionados
-        hilos = create_proces_form.hilos.data
-        preminencia = create_proces_form.preminencia.data
-        print(f"Preminencia {preminencia}")
         # Mapear los IDs a objetos de recursos
         recursos_seleccionados = [r for r in recursos if str(r.get_id_recurso()) in recursos_seleccionados]
+        print("Recursos")
+        for recurso in recursos_seleccionados:
+            print(recurso.get_nombre())
+        hilos = create_proces_form.hilos.data
+        print(f"Hilos {hilos}")
+        preminencia = create_proces_form.preminencia.data
+        print(f"Preminencia {preminencia}")
+        
         # Creacion proceso
         proceso = Procesos(id_proceso,tamanio,hilos,recursos_seleccionados,preminencia)  
         # Agregar procesos a lista de procesos,cola de nuevo y cola de los recursos respectivos
@@ -114,7 +106,7 @@ def crear_proceso():
         lista_procesos.append(proceso)
         BCP.set_procesos(lista_procesos)
         cola_nuevo.append(proceso)
-        
+        BCP.set_cola_nuevo(cola_nuevo)
         '''
         
         #Para cuando hay preminencia
@@ -158,15 +150,19 @@ def crear_proceso():
             if rec.get_nombre() == "CPU" and proceso not in cola_cpu:
                 cola_cpu.append(proceso)
                 BCP.set_cola_cpu(cola_cpu)
+                print(f"Procesos agregado a cola de cpu")
             elif rec.get_nombre() == "Memoria RAM" and proceso not in cola_memoria:
                 cola_memoria.append(proceso)
                 BCP.set_cola_memoria(cola_memoria)
+                print(f"Procesos agregado a cola de memoria")
             elif rec.get_nombre() == "Disco Duro" and proceso not in cola_disco:
                 cola_disco.append(proceso)
                 BCP.set_cola_disco(cola_disco)
+                print(f"Procesos agregado a cola de disco")
             elif rec.get_nombre() == "Impresora" and proceso not in cola_impresora:
                 cola_impresora.append(proceso)
                 BCP.set_cola_impresora(cola_impresora)
+                print(f"Procesos agregado a cola de impresora")
                            
         flash("Proceso registrado correctamente")
         return redirect(url_for("index"))
@@ -194,13 +190,25 @@ def visualizar_estados():
     cola_ejecucion = BCP.get_cola_ejecucion()
     cola_terminado = BCP.get_cola_terminado()
     
-    print(f"Cola de nuevos: {cola_nuevo}")
+    print(f"Cola de nuevos:")
     for proceso in cola_nuevo:
         print(f"Proceso ID: {proceso.get_id()}, Tamaño: {proceso.get_tamanio()}")
-    print(f"Cola de listos: {cola_listo}")
-    print(f"Cola de bloqueados: {cola_bloqueado}")
-    print(f"Cola de ejecucuion: {cola_ejecucion}")
-    print(f"Cola de terminado: {cola_terminado}")
+        
+    print(f"Cola de listos: ")
+    for proceso in cola_listo:
+        print(f"Proceso ID: {proceso.get_id()}, Tamaño: {proceso.get_tamanio()}")
+        
+    print(f"Cola de bloqueados: ")
+    for proceso in cola_bloqueado:
+        print(f"Proceso ID: {proceso.get_id()}, Tamaño: {proceso.get_tamanio()}")
+        
+    print(f"Cola de ejecucuion: ")
+    for proceso in cola_ejecucion:
+        print(f"Proceso ID: {proceso.get_id()}, Tamaño: {proceso.get_tamanio()}")
+    
+    print(f"Cola de terminado:")
+    for proceso in cola_terminado:
+        print(f"Proceso ID: {proceso.get_id()}, Tamaño: {proceso.get_tamanio()}")
     
     context={
         "cola_nuevo":cola_nuevo,
@@ -220,10 +228,22 @@ def visualizar_recursos():
     cola_disco = BCP.get_cola_disco()
     cola_impresora = BCP.get_cola_impresora()
     
-    print(cola_cpu)
-    print(cola_memoria)
-    print(cola_disco)
-    print(cola_impresora)
+    
+    print(f"Cola de cpu:")
+    for proceso in cola_cpu:
+        print(f"Proceso ID: {proceso.get_id()}, Tamaño: {proceso.get_tamanio()}")
+        
+    print(f"Cola de memoria: ")
+    for proceso in cola_memoria:
+        print(f"Proceso ID: {proceso.get_id()}, Tamaño: {proceso.get_tamanio()}")
+        
+    print(f"Cola de disco: ")
+    for proceso in cola_disco:
+        print(f"Proceso ID: {proceso.get_id()}, Tamaño: {proceso.get_tamanio()}")
+    
+    print(f"Cola de impresora:")
+    for proceso in cola_impresora:
+        print(f"Proceso ID: {proceso.get_id()}, Tamaño: {proceso.get_tamanio()}")
     
     context={
         "cola_cpu":cola_cpu,

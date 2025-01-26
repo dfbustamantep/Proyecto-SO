@@ -123,7 +123,7 @@ class BCP:
         return self.cola_memoria
     
     def set_cola_memoria(self,cola_memoria:list[Recurso]):
-        self.cola_cpu=cola_memoria
+        self.cola_memoria=cola_memoria
     
     def get_cola_disco(self):
         return self.cola_disco
@@ -391,16 +391,16 @@ class BCP:
             if recursos_disponibles:
                 for recurso in recursos_necesarios:
                 #Si el nombre del recurso es alguno se verifica que este en la cola de ese recurso y este de primeras en esa cola
-                    if recurso.get_nombre() == "CPU":
+                    if recurso.get_nombre() == "CPU" and self.cola_cpu:
                         self.cola_cpu.pop(0)
                                 
-                    elif recurso.get_nombre() == "Memoria RAM":
+                    elif recurso.get_nombre() == "Memoria RAM" and self.cola_memoria:
                         self.cola_memoria.pop(0)
                                 
-                    elif recurso.get_nombre() == "Disco Duro":
+                    elif recurso.get_nombre() == "Disco Duro" and self.cola_disco:
                         self.cola_disco.pop(0)
                                 
-                    elif recurso.get_nombre() == "Impresora":
+                    elif recurso.get_nombre() == "Impresora" and self.cola_impresora:
                         self.cola_impresora.pop(0)
             
                 
@@ -414,7 +414,6 @@ class BCP:
                 if proceso.get_tamanio()==0:
                     print(f"Proceso {proceso.get_id()} terminado")
                     self.cambiar_estado("terminado",proceso)
-                    
                     self.memoria_principal.set_liberar_paginas(f"p{proceso.get_id()}")
                     self.memoria_virtual.set_liberar_paginas(f"p{proceso.get_id()}")
                     self.print_memorias()
@@ -431,19 +430,20 @@ class BCP:
                     for recurso in recursos_necesarios:
                         #
                         if recurso.get_nombre() == "CPU":
-                            self.cola_cpu.append(proceso)
+                            if proceso not in self.cola_cpu:
+                                self.cola_cpu.append(proceso)
                                     
                         elif recurso.get_nombre() == "Memoria RAM":
-                            self.cola_memoria.append(proceso)
+                            if proceso not in self.cola_memoria:
+                                self.cola_memoria.append(proceso)
                                     
                         elif recurso.get_nombre() == "Disco Duro":
-                            self.cola_disco.append(proceso)
+                            if proceso not in self.cola_disco:
+                                self.cola_disco.append(proceso)
                                     
                         elif recurso.get_nombre() == "Impresora":
-                            self.cola_impresora.append(proceso)
-
-                
-                        
+                            if proceso not in self.cola_impresora:
+                                self.cola_impresora.append(proceso)
             else:
                 # Si no están todos los recursos, el proceso regresa a 'listo'
                 print(f"Proceso {proceso.get_id()} no tiene todos los recursos disponibles. Pasa a la cola 'bloqueado'.")
