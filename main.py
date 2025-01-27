@@ -97,6 +97,10 @@ def crear_proceso():
         hilos = create_proces_form.hilos.data
         print(f"Hilos {hilos}")
         preminencia = create_proces_form.preminencia.data
+        if preminencia.lower()  == 'si':
+            preminencia = True
+        else:
+            preminencia = False
         print(f"Preminencia {preminencia}")
         
         # Creacion proceso
@@ -105,42 +109,13 @@ def crear_proceso():
         lista_procesos = BCP.get_procesos()
         lista_procesos.append(proceso)
         BCP.set_procesos(lista_procesos)
-        cola_nuevo.append(proceso)
-        BCP.set_cola_nuevo(cola_nuevo)
-        '''
-        
-        #Para cuando hay preminencia
-        if preminencia == "Si":
-            cola_nuevo= BCP.get_cola_nuevo()
+        # Si tiene preminencia lo agregamos de primeras 
+        if preminencia:
             cola_nuevo.insert(0,proceso)
-            BCP.set_cola_nuevo(cola_nuevo)
-            
-            cola_cpu = BCP.get_cola_cpu()
-            cola_memoria = BCP.get_cola_memoria()
-            cola_disco = BCP.get_cola_disco()
-            cola_impresora = BCP.get_cola_impresora()
-            
-            for rec in recursos_seleccionados:
-                if rec.get_nombre() == "CPU" and proceso not in cola_cpu:
-                    # insert inserta en la posicion de la lista que le indicamos,al tener preminencia se agrega en la primera posicion
-                    cola_cpu.insert(0,proceso)
-                    BCP.set_cola_cpu(cola_cpu)
-                elif rec.get_nombre() == "Memoria RAM" and proceso not in cola_memoria:
-                    cola_memoria.insert(0,proceso)
-                    BCP.set_cola_memoria(cola_memoria)
-                elif rec.get_nombre() == "Disco Duro" and proceso not in cola_disco:
-                    cola_disco.insert(0,proceso)
-                    BCP.set_cola_disco(cola_disco)
-                elif rec.get_nombre() == "Impresora" and proceso not in cola_impresora:
-                    cola_impresora.insert(0,proceso)
-                    BCP.set_cola_impresora(cola_impresora)
-        else: 
-        
-        cola_nuevo= BCP.get_cola_nuevo()
-        if proceso not in cola_nuevo:
-            cola_nuevo.append(proceso)
+        else:
+            cola_nuevo.append(proceso)    
         BCP.set_cola_nuevo(cola_nuevo)
-        '''
+
         cola_cpu = BCP.get_cola_cpu()
         cola_memoria = BCP.get_cola_memoria()
         cola_disco = BCP.get_cola_disco()
@@ -148,19 +123,33 @@ def crear_proceso():
             
         for rec in recursos_seleccionados:
             if rec.get_nombre() == "CPU" and proceso not in cola_cpu:
-                cola_cpu.append(proceso)
+                if preminencia:
+                    cola_cpu.insert(0,proceso)
+                else:
+                    cola_cpu.append(proceso)
                 BCP.set_cola_cpu(cola_cpu)
                 print(f"Procesos agregado a cola de cpu")
+                
             elif rec.get_nombre() == "Memoria RAM" and proceso not in cola_memoria:
-                cola_memoria.append(proceso)
+                if preminencia:
+                    cola_memoria.insert(0,proceso)
+                else:
+                    cola_memoria.append(proceso)
                 BCP.set_cola_memoria(cola_memoria)
                 print(f"Procesos agregado a cola de memoria")
+                
             elif rec.get_nombre() == "Disco Duro" and proceso not in cola_disco:
-                cola_disco.append(proceso)
+                if preminencia:
+                    cola_disco.insert(0,proceso)
+                else:
+                    cola_disco.append(proceso)
                 BCP.set_cola_disco(cola_disco)
                 print(f"Procesos agregado a cola de disco")
             elif rec.get_nombre() == "Impresora" and proceso not in cola_impresora:
-                cola_impresora.append(proceso)
+                if preminencia:
+                    cola_impresora.insert(0,proceso)
+                else:
+                    cola_impresora.append(proceso)
                 BCP.set_cola_impresora(cola_impresora)
                 print(f"Procesos agregado a cola de impresora")
                            

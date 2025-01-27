@@ -428,22 +428,34 @@ class BCP:
 
                     #Si el proceso no ha terminado,lo volvemos a agregar a la lista de recursos
                     for recurso in recursos_necesarios:
-                        #
+                        #Si el recurso tiene preminencia si agrega de primeras a la lista de recursos que necesite
                         if recurso.get_nombre() == "CPU":
                             if proceso not in self.cola_cpu:
-                                self.cola_cpu.append(proceso)
+                                if proceso.get_preminencia():
+                                    self.cola_cpu.insert(0,proceso)
+                                else:
+                                    self.cola_cpu.append(proceso)
                                     
                         elif recurso.get_nombre() == "Memoria RAM":
                             if proceso not in self.cola_memoria:
-                                self.cola_memoria.append(proceso)
+                                if proceso.get_preminencia():
+                                    self.cola_memoria.insert(0,proceso)
+                                else:
+                                    self.cola_memoria.append(proceso)
                                     
                         elif recurso.get_nombre() == "Disco Duro":
                             if proceso not in self.cola_disco:
-                                self.cola_disco.append(proceso)
+                                if proceso.get_preminencia():
+                                    self.cola_disco.insert(0,proceso)
+                                else:
+                                    self.cola_disco.append(proceso)
                                     
                         elif recurso.get_nombre() == "Impresora":
                             if proceso not in self.cola_impresora:
-                                self.cola_impresora.append(proceso)
+                                if proceso.get_preminencia():
+                                    self.cola_impresora.insert(0,proceso)
+                                else:
+                                    self.cola_impresora.append(proceso)
             else:
                 # Si no están todos los recursos, el proceso regresa a 'listo'
                 print(f"Proceso {proceso.get_id()} no tiene todos los recursos disponibles. Pasa a la cola 'bloqueado'.")
@@ -467,16 +479,28 @@ class BCP:
             # Realizamos el cambio de estado,pero para hacer este cambio verificamos que este si se pueda hacer teniendo en cuenta la grafica que esta en el reademe
             if nuevo_estado == "listo" and (estado_anterior=="nuevo" or estado_anterior=="ejecucion" or estado_anterior=="bloqueado"):
                 if proceso not in self.cola_listo:
-                    self.cola_listo.append(proceso)
+                    if proceso.get_preminencia():
+                        self.cola_listo.insert(0,proceso)
+                    else:
+                        self.cola_listo.append(proceso)
+                        
             elif nuevo_estado == "bloqueado" and estado_anterior=="ejecucion":
                 if proceso not in self.cola_bloqueado:
-                    self.cola_bloqueado.append(proceso)
+                    if proceso.get_preminencia():
+                        self.cola_bloqueado.insert(0,proceso)
+                    else:
+                        self.cola_bloqueado.append(proceso)
+                        
             elif nuevo_estado == "ejecucion" and estado_anterior == "listo":
                 if proceso not in self.cola_ejecucion:
-                    self.cola_ejecucion.append(proceso)
+                    if proceso.get_preminencia():
+                        self.cola_ejecucion.insert(0,proceso)
+                    else:
+                        self.cola_ejecucion.append(proceso)
+                    
             elif nuevo_estado == "terminado" and estado_anterior == "ejecucion":
                 if proceso not in self.cola_terminado:
-                    self.cola_terminado.append(proceso)
+                        self.cola_terminado.append(proceso)
             else:
                 print("El cambio de estado no se puede realizar")
 
