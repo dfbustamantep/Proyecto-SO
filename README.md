@@ -68,11 +68,10 @@
 - Instalar dependencias necesarias para usar Flask en este proyecto
   
   ```
-    pip install flask
+    pip install -r requirements.txt
   ```
+- Confirmar que todo se instalo correctamente
+
   ```
-    pip install flask-bootstrap 
-  ```
-  ```
-    pip install flask-wtf
+    pip list
   ```
