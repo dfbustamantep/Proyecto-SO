@@ -332,6 +332,23 @@ class BCP:
         if self.cola_bloqueado:
             # Guardamos el proceso que este de primeras en la cola de nuevo,le cambiamos el estado a listo,y lo añadimos a la cola de listo
             proceso = self.cola_bloqueado.pop(0)
+            # Si tiene preminencia, asegurarnos que obtiene los recursos
+            if proceso.get_preminencia():
+                # Liberar los recursos que necesita
+                for recurso in proceso.get_recursos():
+                    if recurso.get_nombre() == "CPU" and self.cola_cpu:
+                        self.cola_cpu = [p for p in self.cola_cpu if p != proceso]
+                        self.cola_cpu.insert(0, proceso)
+                    elif recurso.get_nombre() == "Memoria RAM" and self.cola_memoria:
+                        self.cola_memoria = [p for p in self.cola_memoria if p != proceso]
+                        self.cola_memoria.insert(0, proceso)
+                    elif recurso.get_nombre() == "Disco Duro" and self.cola_disco:
+                        self.cola_disco = [p for p in self.cola_disco if p != proceso]
+                        self.cola_disco.insert(0, proceso)
+                    elif recurso.get_nombre() == "Impresora" and self.cola_impresora:
+                        self.cola_impresora = [p for p in self.cola_impresora if p != proceso]
+                        self.cola_impresora.insert(0, proceso)
+                        
             self.cambiar_estado("listo",proceso)
             
         # Pasamos los elementos que estan en la cola de nuevo a la cola de listo        
@@ -359,33 +376,56 @@ class BCP:
                 print(f"Revisando disponibilidad del recurso: {recurso.get_nombre()}")
                 #Si el nombre del recurso es alguno se verifica que este en la cola de ese recurso y este de primeras en esa cola
                 if recurso.get_nombre() == "CPU":
-                    #self.cpu.set_dipsonible(False)
-                    if not (proceso in self.cola_cpu and self.cola_cpu[0] == proceso):
-                        recursos_disponibles = False
-                        print("Cola CPU")
-                        for elemento in self.cola_cpu:
-                            print("ID proceso:",elemento.get_id())  
+                    if proceso in self.cola_cpu:
+                        # Si tiene preminencia y no está primero, lo movemos al inicio
+                        if proceso.get_preminencia():
+                            self.cola_cpu.remove(proceso)
+                            self.cola_cpu.insert(0, proceso)
+                        # Verificar si está primero en la cola
+                        if self.cola_cpu[0] != proceso:
+                            recursos_disponibles = False
+                            print("Cola CPU")
+                            for elemento in self.cola_cpu:
+                                print("ID proceso:", elemento.get_id())
 
                 elif recurso.get_nombre() == "Memoria RAM":
-                    if not(proceso in self.cola_memoria and self.cola_memoria[0] == proceso):
-                        recursos_disponibles = False
-                        print("Cola Memoria")
-                        for elemento in self.cola_memoria:
-                            print("ID proceso:",elemento.get_id())  
-                        
+                    if proceso in self.cola_memoria:
+                        # Si tiene preminencia y no está primero, lo movemos al inicio
+                        if proceso.get_preminencia():
+                            self.cola_memoria.remove(proceso)
+                            self.cola_memoria.insert(0, proceso)
+                        # Verificar si está primero en la cola
+                        if self.cola_memoria[0] != proceso:
+                            recursos_disponibles = False
+                            print("Cola Memoria")
+                            for elemento in self.cola_memoria:
+                                print("ID proceso:", elemento.get_id())
+                                
                 elif recurso.get_nombre() == "Disco Duro":
-                    if not(proceso in self.cola_disco and self.cola_disco[0] == proceso):
-                        recursos_disponibles = False
-                        print("Cola DD")
-                        for elemento in self.cola_disco:
-                            print("ID proceso:",elemento.get_id())  
-                        
+                    if proceso in self.cola_disco:
+                        # Si tiene preminencia y no está primero, lo movemos al inicio
+                        if proceso.get_preminencia():
+                            self.cola_disco.remove(proceso)
+                            self.cola_disco.insert(0, proceso)
+                        # Verificar si está primero en la cola
+                        if self.cola_disco[0] != proceso:
+                            recursos_disponibles = False
+                            print("Cola DD")
+                            for elemento in self.cola_disco:
+                                print("ID proceso:", elemento.get_id())
+                                
                 elif recurso.get_nombre() == "Impresora":
-                    if not(proceso in self.cola_impresora and self.cola_impresora[0] == proceso):
-                        recursos_disponibles = False
-                        print("Cola Impresora")
-                        for elemento in self.cola_impresora:
-                            print("ID proceso:",elemento.get_id())  
+                    if proceso in self.cola_impresora:
+                        # Si tiene preminencia y no está primero, lo movemos al inicio
+                        if proceso.get_preminencia():
+                            self.cola_impresora.remove(proceso)
+                            self.cola_impresora.insert(0, proceso)
+                        # Verificar si está primero en la cola
+                        if self.cola_impresora[0] != proceso:
+                            recursos_disponibles = False
+                            print("Cola Impresora")
+                            for elemento in self.cola_impresora:
+                                print("ID proceso:", elemento.get_id()) 
                         
             # Si todos los recurso estan disponibles pasamos el proceso a ejecucion
             if recursos_disponibles:
@@ -405,7 +445,6 @@ class BCP:
             
                 
                 print(f"Ejecutando proceso {proceso.get_id()} tamanio {proceso.get_tamanio()}")
-                
                 proceso.simular_proceso()
                 self.intercambiar_memorias(f"p{proceso.get_id()}")
                 
@@ -460,7 +499,6 @@ class BCP:
                 # Si no están todos los recursos, el proceso regresa a 'listo'
                 print(f"Proceso {proceso.get_id()} no tiene todos los recursos disponibles. Pasa a la cola 'bloqueado'.")
                 if proceso not in self.cola_bloqueado:
-                    #self.cola_bloqueado.append(proceso)
                     self.cambiar_estado("bloqueado",proceso)
                 
         self.mostrar_procesos()
