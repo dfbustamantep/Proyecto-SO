@@ -1,4 +1,5 @@
 from recurso import Recurso
+import time
 
 def printLines():
     print("----------------------------------------------------------------------")
@@ -64,11 +65,6 @@ class Procesos:
         return ""
         
     def simular_proceso (self):
-        #print(f"Proceso {self.get_id}")
-        #self.__ejecuciones -= 1
+            # Añadimos un pequeño retraso para poder ver el proceso en ejecución
+        time.sleep(1)  # Espera 1 segundo
         self.__tamanio -= 1
-        
-        #if self.get_tamanio() == 0 :
-        #    self.__estado = "terminado"
-        #   print(f"El proceso {self.get_id()} ha terminado")
-        #    return True

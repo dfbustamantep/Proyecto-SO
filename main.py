@@ -268,8 +268,11 @@ def visualizar_memoria():
 
 @app.route('/ejecutar_procesos',methods=['POST'])
 def ejecutar_procesos():
-    BCP.ejecutar()
-    flash("Se realizo una ejecucion","succes")
+    proceso_id = BCP.ejecutar()
+    if proceso_id is not None:
+        flash(f"Se ejecutó el proceso {proceso_id}", "success")
+    else:
+        flash("No se pudo ejecutar ningún proceso", "warning")
     return redirect(url_for("visualizar_procesos"))
 
 @app.errorhandler(404)

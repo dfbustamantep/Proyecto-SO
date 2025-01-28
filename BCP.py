@@ -429,6 +429,7 @@ class BCP:
                         
             # Si todos los recurso estan disponibles pasamos el proceso a ejecucion
             if recursos_disponibles:
+                proceso_ejecutando = None
                 for recurso in recursos_necesarios:
                 #Si el nombre del recurso es alguno se verifica que este en la cola de ese recurso y este de primeras en esa cola
                     if recurso.get_nombre() == "CPU" and self.cola_cpu:
@@ -447,7 +448,7 @@ class BCP:
                 print(f"Ejecutando proceso {proceso.get_id()} tamanio {proceso.get_tamanio()}")
                 proceso.simular_proceso()
                 self.intercambiar_memorias(f"p{proceso.get_id()}")
-                
+                proceso_ejecutando = proceso.get_id()
                 
                 #Si el proceos tiene un tamanio de 0 quiere decir que ya finalizo
                 if proceso.get_tamanio()==0:
@@ -506,6 +507,7 @@ class BCP:
         self.mostar_colas_estados()
         print()
         self.print_memorias()
+        return proceso_ejecutando
     
     def cambiar_estado(self,nuevo_estado:str,proceso:Procesos):
         if nuevo_estado in BCP.estados_procesos:
