@@ -268,8 +268,9 @@ def visualizar_memoria():
 
 @app.route('/ejecutar_procesos',methods=['POST'])
 def ejecutar_procesos():
-    proceso_id = BCP.ejecutar()
-    if proceso_id is not None:
+    BCP.ejecutar()
+    proceso_id = BCP.get_proceso_ejecutado()
+    if proceso_id != 0:
         flash(f"Se ejecutó el proceso {proceso_id}", "success")
     else:
         flash("No se pudo ejecutar ningún proceso", "warning")

@@ -70,6 +70,7 @@ class BCP:
     memoria_principal = Memoria("Memoria principal",tamanio_MP,tamanio_marco)
     memoria_virtual = Memoria("Memoria virtual",tamanio_MV,tamanio_marco)
 
+    proceso_ejecutado = 0
     # Getters y setters
     def get_procesos(self):
         return self.procesos
@@ -158,6 +159,9 @@ class BCP:
     def get_memoria_virtual(self):
         return self.memoria_virtual 
     
+    def get_proceso_ejecutado(self):
+        return self.proceso_ejecutado
+     
     def creacion_procesos(self):
         try:
             numero_procesos = int(input("Ingrese el número de procesos que desea crear: "))
@@ -448,7 +452,7 @@ class BCP:
                 print(f"Ejecutando proceso {proceso.get_id()} tamanio {proceso.get_tamanio()}")
                 proceso.simular_proceso()
                 self.intercambiar_memorias(f"p{proceso.get_id()}")
-                proceso_ejecutando = proceso.get_id()
+                self.proceso_ejecutado = proceso.get_id()
                 
                 #Si el proceos tiene un tamanio de 0 quiere decir que ya finalizo
                 if proceso.get_tamanio()==0:
@@ -507,7 +511,7 @@ class BCP:
         self.mostar_colas_estados()
         print()
         self.print_memorias()
-        return proceso_ejecutando
+        
     
     def cambiar_estado(self,nuevo_estado:str,proceso:Procesos):
         if nuevo_estado in BCP.estados_procesos:

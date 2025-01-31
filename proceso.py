@@ -65,6 +65,6 @@ class Procesos:
         return ""
         
     def simular_proceso (self):
-            # Añadimos un pequeño retraso para poder ver el proceso en ejecución
-        time.sleep(1)  # Espera 1 segundo
+        # Añadimos un pequeño retraso para poder ver el proceso en ejecución
+        time.sleep(2)  # Espera 1 segundo
         self.__tamanio -= 1
