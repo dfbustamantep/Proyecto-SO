@@ -111,7 +111,16 @@ def crear_proceso():
         BCP.set_procesos(lista_procesos)
         # Si tiene preminencia lo agregamos de primeras 
         if preminencia:
-            cola_nuevo.insert(0,proceso)
+            # ultima psocion de la cola de nuevos
+            indice_insercion = 0
+            for proceso_n in cola_nuevo:  
+            # proceso es el elemento actual de la cola
+                if not proceso_n.get_preminencia():
+                    break
+                indice_insercion += 1
+                
+            print(proceso.get_id())
+            cola_nuevo.insert(indice_insercion,proceso)
         else:
             cola_nuevo.append(proceso)    
         BCP.set_cola_nuevo(cola_nuevo)
@@ -124,15 +133,31 @@ def crear_proceso():
         for rec in recursos_seleccionados:
             if rec.get_nombre() == "CPU" and proceso not in cola_cpu:
                 if preminencia:
-                    cola_cpu.insert(0,proceso)
+                    # ultima psocion de la cola
+                    indice_insercion = 0
+                    for proceso_n in cola_cpu:  
+                    # proceso es el elemento actual de la cola
+                        if not proceso_n.get_preminencia():
+                            break
+                        indice_insercion += 1
+                    print(proceso.get_id())
+                    cola_cpu.insert(indice_insercion,proceso)
                 else:
-                    cola_cpu.append(proceso)
+                    cola_cpu.append(proceso)   
                 BCP.set_cola_cpu(cola_cpu)
-                print(f"Procesos agregado a cola de cpu")
+                print(f"Proceso agregado a cola de cpu")
                 
             elif rec.get_nombre() == "Memoria RAM" and proceso not in cola_memoria:
                 if preminencia:
-                    cola_memoria.insert(0,proceso)
+                    # ultima psocion de la cola
+                    indice_insercion = 0
+                    for proceso_n in cola_memoria:  
+                    # proceso es el elemento actual de la cola
+                        if not proceso_n.get_preminencia():
+                            break
+                        indice_insercion += 1
+                    print(proceso.get_id())
+                    cola_memoria.insert(indice_insercion,proceso)
                 else:
                     cola_memoria.append(proceso)
                 BCP.set_cola_memoria(cola_memoria)
@@ -140,14 +165,30 @@ def crear_proceso():
                 
             elif rec.get_nombre() == "Disco Duro" and proceso not in cola_disco:
                 if preminencia:
-                    cola_disco.insert(0,proceso)
+                    # ultima psocion de la cola
+                    indice_insercion = 0
+                    for proceso_n in cola_disco:  
+                    # proceso es el elemento actual de la cola
+                        if not proceso_n.get_preminencia():
+                            break
+                        indice_insercion += 1
+                    print(proceso.get_id())
+                    cola_disco.insert(indice_insercion,proceso)
                 else:
                     cola_disco.append(proceso)
                 BCP.set_cola_disco(cola_disco)
                 print(f"Procesos agregado a cola de disco")
             elif rec.get_nombre() == "Impresora" and proceso not in cola_impresora:
                 if preminencia:
-                    cola_impresora.insert(0,proceso)
+                    # ultima psocion de la cola
+                    indice_insercion = 0
+                    for proceso_n in cola_impresora:  
+                    # proceso es el elemento actual de la cola
+                        if not proceso_n.get_preminencia():
+                            break
+                        indice_insercion += 1
+                    print(proceso.get_id())
+                    cola_impresora.insert(indice_insercion,proceso)
                 else:
                     cola_impresora.append(proceso)
                 BCP.set_cola_impresora(cola_impresora)

@@ -341,17 +341,42 @@ class BCP:
                 # Liberar los recursos que necesita
                 for recurso in proceso.get_recursos():
                     if recurso.get_nombre() == "CPU" and self.cola_cpu:
+                        #Eliminamos el proceso si ya esta en la cola
                         self.cola_cpu = [p for p in self.cola_cpu if p != proceso]
-                        self.cola_cpu.insert(0, proceso)
+                        # ultima psocion de la cola
+                        indice_insercion = 0
+                        for proceso_n in self.cola_cpu:  
+                            if not proceso_n.get_preminencia():
+                                break
+                            indice_insercion += 1
+                        self.cola_cpu.insert(indice_insercion,proceso)
                     elif recurso.get_nombre() == "Memoria RAM" and self.cola_memoria:
                         self.cola_memoria = [p for p in self.cola_memoria if p != proceso]
-                        self.cola_memoria.insert(0, proceso)
+                        # ultima psocion de la cola
+                        indice_insercion = 0
+                        for proceso_n in self.cola_memoria:  
+                            if not proceso_n.get_preminencia():
+                                break
+                            indice_insercion += 1
+                        self.cola_memoria.insert(indice_insercion,proceso)
                     elif recurso.get_nombre() == "Disco Duro" and self.cola_disco:
                         self.cola_disco = [p for p in self.cola_disco if p != proceso]
-                        self.cola_disco.insert(0, proceso)
+                        # ultima psocion de la cola
+                        indice_insercion = 0
+                        for proceso_n in self.cola_disco:  
+                            if not proceso_n.get_preminencia():
+                                break
+                            indice_insercion += 1
+                        self.cola_disco.insert(indice_insercion,proceso)
                     elif recurso.get_nombre() == "Impresora" and self.cola_impresora:
                         self.cola_impresora = [p for p in self.cola_impresora if p != proceso]
-                        self.cola_impresora.insert(0, proceso)
+                        # ultima psocion de la cola
+                        indice_insercion = 0
+                        for proceso_n in self.cola_impresora:  
+                            if not proceso_n.get_preminencia():
+                                break
+                            indice_insercion += 1
+                        self.cola_impresora.insert(indice_insercion,proceso)
                         
             self.cambiar_estado("listo",proceso)
             
@@ -524,21 +549,37 @@ class BCP:
             if nuevo_estado == "listo" and (estado_anterior=="nuevo" or estado_anterior=="ejecucion" or estado_anterior=="bloqueado"):
                 if proceso not in self.cola_listo:
                     if proceso.get_preminencia():
-                        self.cola_listo.insert(0,proceso)
+                        # ultima psocion de la cola
+                        indice_insercion = 0
+                        for proceso_n in self.cola_listo:  
+                            if not proceso_n.get_preminencia():
+                                break
+                            indice_insercion += 1
+                        self.cola_listo.insert(indice_insercion,proceso)
                     else:
                         self.cola_listo.append(proceso)
                         
             elif nuevo_estado == "bloqueado" and estado_anterior=="ejecucion":
                 if proceso not in self.cola_bloqueado:
                     if proceso.get_preminencia():
-                        self.cola_bloqueado.insert(0,proceso)
+                        indice_insercion = 0
+                        for proceso_n in self.cola_bloqueado:  
+                            if not proceso_n.get_preminencia():
+                                break
+                            indice_insercion += 1
+                        self.cola_bloqueado.insert(indice_insercion,proceso)
                     else:
                         self.cola_bloqueado.append(proceso)
                         
             elif nuevo_estado == "ejecucion" and estado_anterior == "listo":
                 if proceso not in self.cola_ejecucion:
                     if proceso.get_preminencia():
-                        self.cola_ejecucion.insert(0,proceso)
+                        indice_insercion = 0
+                        for proceso_n in self.cola_ejecucion:  
+                            if not proceso_n.get_preminencia():
+                                break
+                            indice_insercion += 1
+                        self.cola_ejecucion.insert(indice_insercion,proceso)
                     else:
                         self.cola_ejecucion.append(proceso)
                     
