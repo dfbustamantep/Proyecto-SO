@@ -46,7 +46,7 @@ class BCP:
     2**10=1024
     '''
     # tamaño memoria RAM(Principal)
-    tamanio_MP = 2**8
+    tamanio_MP = 2**7
 
     # tamaño memoria virtual (2 veces el tamaño de la memoria principal)
     tamanio_MV = tamanio_MP*2
@@ -64,8 +64,10 @@ class BCP:
 
     # la primera fila de la memoria ram siempre va a tener el SO
     # Procentaje del proceso que se va a subir a la memoria ram y memoria secundaria
-    porcentaje_MP = 0.3
-    porcentaje_MV = 0.7
+    # numero de paginas que se suben a cada memoria
+    porcentaje_MP = 3
+    #porcentaje_MV = 7
+    
 
     memoria_principal = Memoria("Memoria principal",tamanio_MP,tamanio_marco)
     memoria_virtual = Memoria("Memoria virtual",tamanio_MV,tamanio_marco)
@@ -150,8 +152,8 @@ class BCP:
     def get_porcentaje_MP(self):
         return self.porcentaje_MP
 
-    def get_porcentaje_MV(self):
-        return self.porcentaje_MV  
+    #def get_porcentaje_MV(self):
+    #    return self.porcentaje_MV  
 
     def get_memoria_principal(self):
         return self.memoria_principal

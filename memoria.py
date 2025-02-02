@@ -1,5 +1,6 @@
 import random
 
+
 class Memoria:
     def __init__(self,tipo:str,tamanio:int,tamanio_marco:int):
         self.__tipo = tipo
@@ -10,7 +11,7 @@ class Memoria:
         self.__matriz_memoria = ['O'] * self.__paginas
         
         if self.__tipo.lower() == "memoria principal":
-            self.__matriz_memoria = ['SO'] + ['O'] * (self.__paginas-1)
+            self.__matriz_memoria = ['SO']*tamanio_marco + ['O'] * (self.__paginas-tamanio_marco)
         else:
             self.__matriz_memoria = ['O'] * self.__paginas
     #Getters
@@ -51,7 +52,7 @@ class Memoria:
             id_pagina_proceso += 1 
             # Generamos un indice aleatorio al cual vamos a ocupar con el proceso
             indice_aleatorio = random.randint(0, len(self.__matriz_memoria) - 1)
-            print()
+            print(id_pagina_proceso)
 
             if self.__matriz_memoria[indice_aleatorio] == 'O':
                 self.__matriz_memoria[indice_aleatorio] = proceso + "."+str(id_pagina_proceso)

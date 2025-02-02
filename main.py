@@ -20,7 +20,7 @@ tamanio_marco = BCP.get_tamanio_marco()
     
     #Porcentaje que se sube a cada memoria
 porcentaje_MP = BCP.get_porcentaje_MP()
-porcentaje_MV = BCP.get_porcentaje_MV()
+
 
     #Memorias
 memoria_principal = BCP.get_memoria_principal() 
@@ -66,8 +66,10 @@ def crear_proceso():
         print(f"Tamanio proceso {id_proceso} :{tamanio}")
          # Math.ceil se usa para aproximar al siguiente entero en caso de que la division no se exacta 
         paginas_proceso = math.ceil(tamanio/BCP.get_tamanio_marco())
-        paginas_memoria_principal=math.ceil(paginas_proceso*BCP.get_porcentaje_MP())
+        #paginas_memoria_principal=math.ceil(paginas_proceso*BCP.get_porcentaje_MP())
+        paginas_memoria_principal=BCP.get_porcentaje_MP()
         paginas_memoria_virtual=paginas_proceso-paginas_memoria_principal
+        
         print(f"Paginas proceso {id_proceso} :{paginas_proceso}\npaginas memoria principal:{paginas_memoria_principal}\npaginas memoria virtual:{paginas_memoria_virtual}")
         memoria_principal = BCP.get_memoria_principal()
         memoria_virtual = BCP.get_memoria_virtual()
@@ -290,7 +292,7 @@ def visualizar_memoria():
     tamanio_MV = BCP.get_tamanio_MV()
     tamanio_marco = BCP.get_tamanio_marco()
     porcentaje_MP = BCP.get_porcentaje_MP()
-    porcentaje_MV = BCP.get_porcentaje_MV()
+    #porcentaje_MV = BCP.get_porcentaje_MV()
     memoria_principal = BCP.get_memoria_principal()
     memoria_virtual = BCP.get_memoria_virtual()
 
@@ -300,7 +302,7 @@ def visualizar_memoria():
         "tamanio_MV":tamanio_MV,
         "tamanio_marco":tamanio_marco,
         "porcentaje_MP":porcentaje_MP,
-        "porcentaje_MV":porcentaje_MV,
+        #"porcentaje_MV":porcentaje_MV,
         "memoria_principal":memoria_principal,
         "memoria_virtual":memoria_virtual
     }
