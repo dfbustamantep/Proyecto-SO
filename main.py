@@ -96,8 +96,9 @@ def crear_proceso():
         print("Recursos")
         for recurso in recursos_seleccionados:
             print(recurso.get_nombre())
-        hilos = create_proces_form.hilos.data
-        print(f"Hilos {hilos}")
+        
+        hilos = calcular_hilos(tamanio)
+        print(f"El proceso va a tener {hilos}")
         preminencia = create_proces_form.preminencia.data
         if preminencia.lower()  == 'si':
             preminencia = True
@@ -201,6 +202,19 @@ def crear_proceso():
     
     return render_template('crear_proceso.html',**context)
 
+
+def calcular_hilos(tamanio: int):
+    if tamanio <= 20:
+        return 1
+    elif tamanio <= 40:
+        return 2
+    elif tamanio <= 60:
+        return 3
+    elif tamanio <= 80:
+        return 4
+    else:
+        return 5
+    
 @app.route('/visualizar_procesos')
 def visualizar_procesos():
     # Lista de proceos

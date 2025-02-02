@@ -44,13 +44,6 @@
                 {% endfor %}
             </div>
 
-            <div class="mb-4">
-                {{ create_proces_form.hilos.label(class="form-label") }}
-                {{ create_proces_form.hilos(class="form-control") }}
-                {% for error in create_proces_form.hilos.errors %}
-                    <div class="text-danger">{{ error }}</div>
-                {% endfor %}
-            </div>
             <br>
             <div class="mb-4">
                 {{ create_proces_form.preminencia.label(class="form-label") }}
