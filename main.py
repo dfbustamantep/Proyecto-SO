@@ -107,7 +107,7 @@ def crear_proceso():
         print(f"Preminencia {preminencia}")
         
         # Creacion proceso
-        proceso = Procesos(id_proceso,tamanio,hilos,recursos_seleccionados,preminencia)  
+        proceso = Procesos(id_proceso,tamanio,hilos,recursos_seleccionados,preminencia,paginas_proceso,paginas_memoria_principal,paginas_memoria_virtual)  
         # Agregar procesos a lista de procesos,cola de nuevo y cola de los recursos respectivos
         lista_procesos = BCP.get_procesos()
         lista_procesos.append(proceso)
