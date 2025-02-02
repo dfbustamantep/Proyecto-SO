@@ -49,12 +49,12 @@ class Memoria:
     def set_paginas_ocuapadas(self,numero_paginas:int,proceso:str,tamanio_pagina:int,id_pagina_proceso:int=00):
         # Mientras el numero de paginas que ocupa el proceso sea mayor que 0
         while numero_paginas>0:
-            id_pagina_proceso += 1 
             # Generamos un indice aleatorio al cual vamos a ocupar con el proceso
             indice_aleatorio = random.randint(0, len(self.__matriz_memoria) - 1)
             print(id_pagina_proceso)
 
             if self.__matriz_memoria[indice_aleatorio] == 'O':
+                id_pagina_proceso += 1 
                 self.__matriz_memoria[indice_aleatorio] = proceso + "."+str(id_pagina_proceso)
                 self.__tamanio -= tamanio_pagina
                 numero_paginas -= 1
