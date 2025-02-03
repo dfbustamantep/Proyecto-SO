@@ -580,18 +580,34 @@ class BCP:
                         self.cola_bloqueado.insert(indice_insercion,proceso)
                     else:
                         self.cola_bloqueado.append(proceso)
-                        
+            
+            # cambiar a ejecucion,toca revisar el numero de paginas que tenga el proceso e insertarlo en la primera posicion de cada una de las          
+            # listas de ejecucuion
             elif nuevo_estado == "ejecucion" and estado_anterior == "listo":
-                if proceso not in self.cola_ejecucion:
-                    if proceso.get_preminencia():
-                        indice_insercion = 0
-                        for proceso_n in self.cola_ejecucion:  
-                            if not proceso_n.get_preminencia():
-                                break
-                            indice_insercion += 1
-                        self.cola_ejecucion.insert(indice_insercion,proceso)
-                    else:
-                        self.cola_ejecucion.append(proceso)
+                #cola_ejecucion =[[] for _ in range(procesadores)]
+                '''
+                                {% for i in range (procesadores)%}
+                <div class="mb-3">
+                    <h3 class="h4">Procesador {{i+1}}</h3>
+                    <ol class="list-group">
+                        {% for proceso in cola_ejecucion[i] %}
+                            <li class="list-group-item">Proceso {{proceso.get_id()}}</li>
+                        {% else %}
+                            <div class="alert alert-info" role="alert">No hay procesos en esta cola</div>
+                        {% endfor %}
+                '''
+                hilos=proceso.get_hilos()
+                for i in range (min(hilos,self.procesadores)):
+                    if proceso not in self.cola_ejecucion[i]:
+                        if proceso.get_preminencia():
+                            indice_insercion = 0
+                            for proceso_n in self.cola_ejecucion[i]:  
+                                if not proceso_n.get_preminencia():
+                                    break
+                                indice_insercion += 1
+                            self.cola_ejecucion[i].insert(indice_insercion,proceso)
+                        else:
+                            self.cola_ejecucion[i].append(proceso)
                     
             elif nuevo_estado == "terminado" and estado_anterior == "ejecucion":
                 if proceso not in self.cola_terminado:

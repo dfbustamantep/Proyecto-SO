@@ -249,10 +249,10 @@ def visualizar_estados():
         print(f"Proceso ID: {proceso.get_id()}, Tamaño: {proceso.get_tamanio()}")
         
     print(f"Cola de ejecucion: ")
-    """ for i, cola in enumerate(cola_ejecucion):
+    for i, cola in enumerate(cola_ejecucion):
         print(f"\tProcesador {i+1}:")
         for proceso in cola:
-            print(f"\tID proceso: {proceso.get_id()}") """
+            print(f"\tID proceso: {proceso.get_id()}") 
     
     for i in range (procesadores):
         for proceso in cola_ejecucion[i]:
