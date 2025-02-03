@@ -331,8 +331,10 @@ class BCP:
         
         printLines()
         print("\tCola ejecucion") 
-        for elemento in self.cola_ejecucion:
-            print("ID proceso:",elemento.get_id())  
+        for i, cola in enumerate(self.cola_ejecucion):
+            print(f"\tProcesador {i+1}:")
+            for proceso in cola:
+                print(f"\tID proceso: {proceso.get_id()}")
 
         printLines()
         print("\tCola terminado") 
@@ -399,12 +401,12 @@ class BCP:
             # Guardamos el proceso que este de primeras en la cola de listo,le cambiamos el estado a listo,y lo añadimos a la cola de listo
             proceso = self.cola_listo.pop(0)
             recursos_necesarios = proceso.get_recursos()
+            recursos_disponibles = True
             
             print("Recursos necesarios")
             for r in recursos_necesarios:
                 print(r.mostrar_recurso())
 
-            recursos_disponibles = True
             # Cambiamos el proceso a estado de ejecucion,ya en estado de ejecucion revisamos si los recursos estan disponibles
             self.cambiar_estado("ejecucion",proceso)
             
