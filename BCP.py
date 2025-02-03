@@ -485,7 +485,12 @@ class BCP:
             
                 
                 print(f"Ejecutando proceso {proceso.get_id()} tamanio {proceso.get_tamanio()}")
-                proceso.simular_proceso()
+                if proceso.get_tamanio()<proceso.get_hilos():
+                    for _ in range(proceso.get_tamanio()):
+                        proceso.simular_proceso()
+                else:
+                    for _ in range(proceso.get_hilos()):
+                        proceso.simular_proceso()
                 self.intercambiar_memorias(f"p{proceso.get_id()}")
                 self.proceso_ejecutado = proceso.get_id()
                 
@@ -632,8 +637,24 @@ class BCP:
                     self.cola_bloqueado.remove(proceso)
                     
             elif estado_anterior == "ejecucion":
-                if proceso in self.cola_ejecucion:
-                    self.cola_ejecucion.remove(proceso)
+                
+                '''
+                                for i in range (min(hilos,self.procesadores)):
+                    if proceso not in self.cola_ejecucion[i]:
+                        if proceso.get_preminencia():
+                            indice_insercion = 0
+                            for proceso_n in self.cola_ejecucion[i]:  
+                                if not proceso_n.get_preminencia():
+                                    break
+                                indice_insercion += 1
+                            self.cola_ejecucion[i].insert(indice_insercion,proceso)
+                        else:
+                            self.cola_ejecucion[i].append(proceso)
+                    '''
+                hilos=proceso.get_hilos()
+                for i in range (min(hilos,self.procesadores)):
+                    if proceso in self.cola_ejecucion[i]:
+                        self.cola_ejecucion[i].remove(proceso)
                     
             elif estado_anterior == "terminado":
                 if proceso in self.cola_terminado:

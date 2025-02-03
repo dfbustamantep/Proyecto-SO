@@ -341,9 +341,12 @@ def ejecutar_procesos():
         flash("No se pudo ejecutar ningún proceso", "warning")
     return redirect(url_for("visualizar_procesos"))
 
+'''@app.errorhandler(404)
+def not_found_endpoint(error):
+    return render_template('404.html',error=error)'''
 @app.errorhandler(404)
 def not_found_endpoint(error):
-    return render_template('404.html',error=error)
+    return render_template('index.html')
 
 @app.route('/')
 def index():
