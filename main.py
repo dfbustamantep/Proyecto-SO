@@ -235,7 +235,7 @@ def visualizar_estados():
     cola_bloqueado = BCP.get_cola_bloqueado()
     cola_ejecucion = BCP.get_cola_ejecucion()
     cola_terminado = BCP.get_cola_terminado()
-    
+    procesadores = BCP.get_procesadores()
     print(f"Cola de nuevos:")
     for proceso in cola_nuevo:
         print(f"Proceso ID: {proceso.get_id()}, Tamaño: {proceso.get_tamanio()}")
@@ -249,9 +249,11 @@ def visualizar_estados():
         print(f"Proceso ID: {proceso.get_id()}, Tamaño: {proceso.get_tamanio()}")
         
     print(f"Cola de ejecucuion: ")
-    for proceso in cola_ejecucion:
-        print(f"Proceso ID: {proceso.get_id()}, Tamaño: {proceso.get_tamanio()}")
-    
+    for i, cola in enumerate(cola_ejecucion):
+        print(f"\tProcesador {i+1}:")
+        for proceso in cola:
+            print(f"\tID proceso: {proceso.get_id()}")
+        
     print(f"Cola de terminado:")
     for proceso in cola_terminado:
         print(f"Proceso ID: {proceso.get_id()}, Tamaño: {proceso.get_tamanio()}")
@@ -261,7 +263,8 @@ def visualizar_estados():
         "cola_listo":cola_listo,
         "cola_bloqueado":cola_bloqueado,
         "cola_ejecucion":cola_ejecucion,
-        "cola_terminado":cola_terminado
+        "cola_terminado":cola_terminado,
+        "procesadores":procesadores
     }
     
     return render_template('visualizar_estados.html',**context)

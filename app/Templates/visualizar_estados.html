@@ -11,50 +11,70 @@
 
 {% block content %}
     <h1>Colas de estados</h1>
+    <h4>Numero de procesadores : {{procesadores}}</h4>
     <div class="container mt-4">
-        <h2>Cola de procesos con estado nuevo</h2>
-        <ol class="list-group">
-            {% for proceso in cola_nuevo %}
-                <li class="list-group-item">Proceso {{proceso.get_id()}}</li>
-            {% else %}
-                <div class="alert alert-info" role="alert">No hay procesos en esta cola</div>
-            {% endfor %}
-        </ol>
+        <div class="mb-4">
+            <h2>Cola de procesos con estado nuevo</h2>
+            <ol class="list-group">
+                {% for proceso in cola_nuevo %}
+                    <li class="list-group-item">Proceso {{proceso.get_id()}}</li>
+                {% else %}
+                    <div class="alert alert-info" role="alert">No hay procesos en esta cola</div>
+                {% endfor %}
+            </ol>
+        </div>
         
-        <h2>Cola de procesos con estado listo</h2>
-        <ol class="list-group">
-            {% for proceso in cola_listo %}
-                <li class="list-group-item">Proceso {{proceso.get_id()}}</li>
-            {% else %}
-                <div class="alert alert-info" role="alert">No hay procesos en esta cola</div>
-            {% endfor %}
-        </ol>
+        <div class="mb-4">
+            <h2>Cola de procesos con estado listo</h2>
+            <ol class="list-group">
+                {% for proceso in cola_listo %}
+                    <li class="list-group-item">Proceso {{proceso.get_id()}}</li>
+                {% else %}
+                    <div class="alert alert-info" role="alert">No hay procesos en esta cola</div>
+                {% endfor %}
+            </ol>
+        </div>
 
-        <h2>Cola de procesos con estado bloqueado</h2>
-        <ol class="list-group">
-            {% for proceso in cola_bloqueado %}
-                <li class="list-group-item">Proceso {{proceso.get_id()}}</li>
-            {% else %}
-                <div class="alert alert-info" role="alert">No hay procesos en esta cola</div>
-            {% endfor %}
-        </ol>
+        <div class="mb-4">
+            <h2>Cola de procesos con estado bloqueado</h2>
+            <ol class="list-group">
+                {% for proceso in cola_bloqueado %}
+                    <li class="list-group-item">Proceso {{proceso.get_id()}}</li>
+                {% else %}
+                    <div class="alert alert-info" role="alert">No hay procesos en esta cola</div>
+                {% endfor %}
+            </ol>
+        </div>
+        
+        <div class="mb-4">
+            <h2>Cola de procesos con estado ejecucion</h2>
+            <div class="ps-4">
+                {% for i in range (procesadores)%}
+                <div class="mb-3">
+                    <h3 class="h4">Procesador {{i+1}}</h3>
+                    <ol class="list-group">
+                        {% for proceso in cola_ejecucion[i] %}
+                            <li class="list-group-item">Proceso {{proceso.get_id()}}</li>
+                        {% else %}
+                            <div class="alert alert-info" role="alert">No hay procesos en esta cola</div>
+                        {% endfor %}
+                    </ol>
+                </div>
+                {%endfor%}
+            </div>
+        </div>
+        
 
-        <h2>Cola de procesos con estado ejecucion</h2>
-        <ol class="list-group">
-            {% for proceso in cola_ejecucion %}
-                <li class="list-group-item">Proceso {{proceso.get_id()}}</li>
-            {% else %}
-                <div class="alert alert-info" role="alert">No hay procesos en esta cola</div>
-            {% endfor %}
-        </ol>
-
-        <h2>Cola de procesos con estado terminado</h2>
-        <ol class="list-group">
-            {% for proceso in cola_terminado %}
-                <li class="list-group-item">Proceso {{proceso.get_id()}}</li>
-            {% else %}
-                <div class="alert alert-info" role="alert">No hay procesos en esta cola</div>
-            {% endfor %}
-        </ol>
+        <div class="mb-4">
+            <h2>Cola de procesos con estado terminado</h2>
+            <ol class="list-group">
+                {% for proceso in cola_terminado %}
+                    <li class="list-group-item">Proceso {{proceso.get_id()}}</li>
+                {% else %}
+                    <div class="alert alert-info" role="alert">No hay procesos en esta cola</div>
+                {% endfor %}
+            </ol>
+        </div>
+        
     </div>
 {% endblock %}

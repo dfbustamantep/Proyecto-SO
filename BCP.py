@@ -13,12 +13,15 @@ class BCP:
 
     # Lista donde se almacenaran todos los proceos
     procesos = []
-
+    # numcero de procesadores que va a tener nuestra programa
+    procesadores = 5
     # Cola que se usara para cada proceso
     cola_nuevo =[]
     cola_listo =[]
     cola_bloqueado =[]  
-    cola_ejecucion =[]
+    #cola_ejecucion =[]
+    # La cola de ejecucuion va a ser una lsita con todas las colas adentro
+    cola_ejecucion =[[] for _ in range(procesadores)]
     cola_terminado =[]
 
     # Recursos
@@ -73,6 +76,7 @@ class BCP:
     memoria_virtual = Memoria("Memoria virtual",tamanio_MV,tamanio_marco)
 
     proceso_ejecutado = 0
+    
     # Getters y setters
     def get_procesos(self):
         return self.procesos
@@ -163,7 +167,9 @@ class BCP:
     
     def get_proceso_ejecutado(self):
         return self.proceso_ejecutado
-     
+    
+    def get_procesadores(self):
+        return self.procesadores
     def creacion_procesos(self):
         try:
             numero_procesos = int(input("Ingrese el número de procesos que desea crear: "))

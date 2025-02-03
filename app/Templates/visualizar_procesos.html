@@ -14,9 +14,7 @@
     {%if procesos%}
         <div class="container mt-4">
             <h1>Procesos creados</h1>
-            
             <table class="table table-striped">
-
                 <tr>
                     <th>ID Proceso</th>
                     <th>Tamaño inicial</th>
@@ -29,6 +27,7 @@
                     <th>Paginas en memoria principal</th>
                     <th>Paginas en memoria virtual</th>
                 </tr>
+                
                 {% for proceso in procesos %}
                     {{macros.render_procesos(proceso)}}
                 {% endfor %}
