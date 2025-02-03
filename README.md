@@ -16,14 +16,13 @@
 </ul>
 
 <h2>Funcionalidades</h2>
-<h4>Creacion proceso</h4>
+<h4>Creación de procesos</h4>
 <ul>
   <li>ID proceso</li>
-  <li>Nombre</li>
   <li>Tamaño</li>
-  <li>Número de hilos</li>
   <li>Recursos</li>
   <li>Preminencia</li>
+  <li>Número de hilos</li>
 </ul>
 
 <h4>Estados de los procesos</h4>
@@ -42,10 +41,13 @@
 </ul>
 
 <h4>Mutlihilos</h4>
+<ul>
+  <li>Simulación de múltiples procesadores</li>
+</ul>
   
 <h2>Herramientas usadas</h2>
 <ul>
-  <li><b>Lenguaje de progrmación: </b>Python</li>
+  <li><b>Lenguaje de programación: </b>Python 3.12.5</li>
   <li><b>IDE: </b>Visual Studio Code</li>
  <!-- <li>Listo</li>
   <li>Ejecucion</li>
@@ -74,4 +76,8 @@
 
   ```
     pip list
+  ```
+- Ejecutar la aplicación 
+  ```
+    python app.py
   ```
