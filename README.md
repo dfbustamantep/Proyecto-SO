@@ -67,6 +67,16 @@
 
 <h2>Como ejecutar el proyecto</h2>
 
+- Crear entorno virtual para evitar conflictos
+
+  ```
+      python -m venv venv
+  ```
+- Activar entorno virtual para evitar conflictos
+  
+  ```
+    venv\Scripts\activate
+  ```
 - Instalar dependencias necesarias para usar Flask en este proyecto
   
   ```
